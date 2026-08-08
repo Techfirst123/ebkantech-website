@@ -29,10 +29,11 @@ const CASES = [
 
 export default function CaseStudies() {
   return (
-    <section className="bg-white py-20 sm:py-24">
+    <section className="bg-ink-2 py-20 sm:py-24">
       <Container>
         <SectionHeading
           eyebrow="Success stories"
+          onDark
           title="Outcomes our clients measure"
           description="A few of the results teams have seen after bringing Ebkan Tech in."
         />
@@ -40,14 +41,14 @@ export default function CaseStudies() {
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3">
           {CASES.map((item, i) => (
             <Reveal key={item.client} delay={i * 0.08}>
-              <div className="flex h-full flex-col border border-ink/10 p-7">
-                <span className="flex size-10 items-center justify-center bg-accent/10 text-accent">
+              <div className="flex h-full flex-col border border-white/10 bg-white/[0.02] p-7">
+                <span className="flex size-10 items-center justify-center bg-accent/15 text-teal">
                   <TrendingUp className="size-5" aria-hidden="true" />
                 </span>
-                <p className="mt-5 font-display text-3xl font-bold text-accent">{item.metric}</p>
-                <p className="mt-1 text-sm font-medium text-ink/70">{item.result}</p>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-ink/60">{item.summary}</p>
-                <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-ink/40">
+                <p className="mt-5 font-display text-3xl font-bold text-teal">{item.metric}</p>
+                <p className="mt-1 text-sm font-medium text-white/70">{item.result}</p>
+                <p className="mt-4 flex-1 text-sm leading-relaxed text-white/60">{item.summary}</p>
+                <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-white/40">
                   {item.client}
                 </p>
               </div>

@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 const INFO = [
-  { icon: Mail, label: "Email", value: "hello@ebkantech.com" },
-  { icon: Phone, label: "Phone", value: "+1 (555) 010-2024" },
+  { icon: Mail, label: "Email", value: "sales@ebkantech.com" },
+  { icon: Phone, label: "Phone", value: "+91 97178 15626" },
   { icon: MapPin, label: "Delivery", value: "Remote-first, global teams" },
   { icon: Clock, label: "Response time", value: "Within 1 business day" },
 ];

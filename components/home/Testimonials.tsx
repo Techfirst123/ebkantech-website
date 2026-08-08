@@ -28,11 +28,12 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section className="bg-mist py-20 sm:py-24">
+    <section className="bg-ink py-20 sm:py-24">
       <Container>
         <SectionHeading
           eyebrow="Testimonials"
           align="center"
+          onDark
           title="Trusted by teams who need it to work"
           className="mx-auto text-center"
         />
@@ -40,8 +41,8 @@ export default function Testimonials() {
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08}>
-              <figure className="flex h-full flex-col border-l-2 border-accent bg-white p-7">
-                <blockquote className="flex-1 text-sm leading-relaxed text-ink/70">
+              <figure className="flex h-full flex-col border-l-2 border-accent bg-ink-2 p-7">
+                <blockquote className="flex-1 text-sm leading-relaxed text-white/70">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3">
@@ -49,8 +50,8 @@ export default function Testimonials() {
                     {t.initials}
                   </span>
                   <span>
-                    <span className="block text-sm font-semibold text-ink">{t.name}</span>
-                    <span className="block text-xs text-ink/50">{t.title}</span>
+                    <span className="block text-sm font-semibold text-white">{t.name}</span>
+                    <span className="block text-xs text-white/50">{t.title}</span>
                   </span>
                 </figcaption>
               </figure>

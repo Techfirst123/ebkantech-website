@@ -6,9 +6,20 @@ import ReadMore from "@/components/ui/ReadMore";
 
 export default function Hero() {
   return (
-    <section className="banner-overlay relative flex min-h-[650px] items-center overflow-hidden bg-[linear-gradient(135deg,#0c111f_0%,#1b2338_45%,#3a2f18_100%)]">
+    <section className="relative flex min-h-[650px] items-center overflow-hidden bg-[#0a0e1a]">
+      {/* Base gradient — deep, cohesive navy */}
       <div
-        className="absolute inset-0 opacity-[0.12]"
+        className="absolute inset-0 bg-[linear-gradient(135deg,#0a0e1a_0%,#111a30_50%,#0a0e1a_100%)]"
+        aria-hidden="true"
+      />
+      {/* Warm gold glow so the brand mark and headline lift off the dark */}
+      <div
+        className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_0%,rgba(204,152,54,0.20),transparent_70%)]"
+        aria-hidden="true"
+      />
+      {/* Subtle diagonal texture */}
+      <div
+        className="absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage:
             "repeating-linear-gradient(45deg, rgba(255,255,255,0.6) 0px, rgba(255,255,255,0.6) 1px, transparent 1px, transparent 18px)",

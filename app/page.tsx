@@ -15,7 +15,7 @@ export default function Home() {
       <EmailCapturePopup />
       <Hero />
       <CompanyIntro />
-      <StatsSection />
+      {/* Lead with what we actually offer */}
       <DivisionsGrid />
       <AlternatingBlock
         icon={BrainCircuit}
@@ -45,6 +45,8 @@ export default function Home() {
         ctaLabel="More about us"
         reversed
       />
+      {/* Proof: numbers, then stories, then voices */}
+      <StatsSection />
       <CaseStudies />
       <Testimonials />
       <CTABanner />

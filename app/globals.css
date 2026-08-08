@@ -5,9 +5,9 @@
   --foreground: #0c111f;
 
   /* Ritzy-inspired brand palette: gold + dark navy */
-  --color-ink: #0c111f;
-  --color-ink-2: #151b2c;
-  --color-ink-3: #242835;
+  --color-ink: #0a0e1a;
+  --color-ink-2: #111a30;
+  --color-ink-3: #1e2740;
   --color-accent: #90753b;
   --color-accent-2: #6b5426;
   --color-teal: #cc9836;
@@ -75,7 +75,7 @@ body {
     background: #fff;
   }
   .title-underline.center {
-    left: 50%;
+    left: 40%;
     transform: translateX(-50%);
   }
 

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { services, products } from "@/lib/data";
 import MegaMenu from "@/components/site/MegaMenu";
 import Button from "@/components/ui/Button";
+import Image from "next/image";
 
 const NAV_LINKS = [
   { label: "Industries", href: "/industries" },
@@ -54,15 +55,16 @@ export default function Navbar() {
         className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 lg:px-8"
         onMouseLeave={() => setActiveMenu(null)}
       >
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center bg-accent font-display text-sm font-bold text-ink">
-            E
-          </span>
-          <span className="font-display text-base font-semibold uppercase tracking-widest text-white">
-            Ebkan<span className="text-teal">Tech</span>
-          </span>
-        </Link>
-
+       <Link href="/" className="flex items-center gap-2.5" aria-label="Ebkan Tech home">
+        <Image
+         src="/ebkan-tech.png"
+         alt="Ebkan Tech logo"
+         width={160}
+         height={160}
+         priority
+         className="h-12 w-auto object-contain brightness-0 invert transition-opacity hover:opacity-80"
+     />
+    </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           <button
             className={cn(

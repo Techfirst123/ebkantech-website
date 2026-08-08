@@ -10,7 +10,7 @@ const STATS = [
 
 export default function StatsSection() {
   return (
-    <section className="bg-white pb-20 sm:pb-24">
+    <section className="bg-ink pb-20 sm:pb-24">
       <Container>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {STATS.map((stat) => (

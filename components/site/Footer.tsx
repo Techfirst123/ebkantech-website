@@ -26,11 +26,11 @@ export default function Footer() {
             <ul className="mt-6 space-y-3 text-sm text-white/60">
               <li className="flex items-center gap-2.5">
                 <Mail className="size-4 text-teal" aria-hidden="true" />
-                hello@ebkantech.com
+                sales@ebkantech.com
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="size-4 text-teal" aria-hidden="true" />
-                +1 (555) 010-2024
+                +91 97178 15626
               </li>
               <li className="flex items-center gap-2.5">
                 <MapPin className="size-4 text-teal" aria-hidden="true" />

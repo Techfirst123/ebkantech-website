@@ -23,11 +23,12 @@ const OFFERINGS = [
 
 export default function DivisionsGrid() {
   return (
-    <section className="bg-mist py-20 sm:py-24">
+    <section className="bg-ink-2 py-20 sm:py-24">
       <Container>
         <SectionHeading
           eyebrow="What we offer"
           align="center"
+          onDark
           title="Services & Products, at a glance"
           description="Eight focused offerings — five services and three products — each engineered around a single outcome."
           className="mx-auto text-center"

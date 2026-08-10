@@ -3,6 +3,303 @@ import { useEffect, useRef, useState } from "react";
 const DEFAULT_NOTE =
   "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
 
+// Scope of business — parent categories, each with its subcategory cards.
+const SCOPE = [
+  {
+    cat: "Data Science",
+    sub: "Machine learning and analytics where it moves the number.",
+    items: [
+      {
+        code: "DS-01",
+        title: "Supply Chain & Demand Forecasting",
+        desc: "Demand prediction, inventory optimization, and supplier analytics to cut stockouts and holding cost.",
+        tags: ["Forecasting", "Optimization", "Planning"],
+        icon: (
+          <>
+            <path d="M3 3v18h18" />
+            <path d="M7 14l3-4 3 3 5-7" />
+          </>
+        ),
+      },
+      {
+        code: "DS-02",
+        title: "Logistics & Route Optimization",
+        desc: "Fleet, routing, and delivery models that lower cost-per-shipment and improve on-time rates.",
+        tags: ["Routing", "ETA models", "Fleet"],
+        icon: (
+          <>
+            <circle cx="6" cy="18" r="2" />
+            <circle cx="18" cy="6" r="2" />
+            <path d="M8 18h6a3 3 0 0 0 3-3V8M6 16V9a3 3 0 0 1 3-3h6" />
+          </>
+        ),
+      },
+      {
+        code: "DS-03",
+        title: "Hospital & Healthcare Analytics",
+        desc: "Patient flow, bed occupancy, and resource forecasting to improve outcomes and utilization.",
+        tags: ["Patient flow", "Capacity", "Reporting"],
+        icon: (
+          <>
+            <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z" />
+            <path d="M12 8v4m-2-2h4" />
+          </>
+        ),
+      },
+      {
+        code: "DS-04",
+        title: "Warehouse & Inventory Intelligence",
+        desc: "Slotting, stock movement, and replenishment analytics for faster, leaner warehouse operations.",
+        tags: ["Slotting", "Replenishment", "Stock"],
+        icon: (
+          <>
+            <path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+            <path d="M7 21v-8h10v8M7 13h10" />
+          </>
+        ),
+      },
+      {
+        code: "DS-05",
+        title: "Customer Churn Prediction",
+        desc: "Churn models and retention scoring that flag at-risk customers before they leave.",
+        tags: ["Churn ML", "Segmentation", "Retention"],
+        icon: (
+          <>
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 11l-3 3-2-2" />
+          </>
+        ),
+      },
+      {
+        code: "DS-06",
+        title: "E-commerce Sales Analytics & BI",
+        desc: "Sales reports, cohort analysis, and revenue dashboards that make performance readable at a glance.",
+        tags: ["Sales reports", "Dashboards", "Cohorts"],
+        icon: (
+          <>
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "ERP",
+    sub: "ERP platforms shaped to how your operations actually run.",
+    items: [
+      {
+        code: "ERP-01",
+        title: "Solar EPC ERP",
+        desc: "End-to-end ERP for solar EPC — project costing, procurement, site progress, and commissioning.",
+        tags: ["Costing", "Procurement", "Site progress", "Commissioning"],
+        badge: "Delivered",
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2" />
+          </>
+        ),
+      },
+      {
+        code: "ERP-02",
+        title: "Construction ERP",
+        desc: "Construction ERP covering budgets, BOQ, subcontractors, inventory, and progress billing.",
+        tags: ["BOQ", "Subcontractors", "Inventory", "Progress billing"],
+        badge: "Delivered",
+        icon: (
+          <>
+            <path d="M3 21h18M6 21V8l6-4 6 4v13" />
+            <path d="M10 21v-5h4v5M9 11h.01M15 11h.01" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "CRM",
+    sub: "Customer platforms tied directly to your sales process.",
+    items: [
+      {
+        code: "CRM-01",
+        title: "CRM Solutions",
+        desc: "Customer relationship platforms — pipeline, lead scoring, and reporting tied to your sales process.",
+        tags: ["Pipeline", "Lead scoring", "Reports"],
+        icon: (
+          <>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+            <circle cx="10" cy="7" r="3" />
+            <path d="M21 21v-2a4 4 0 0 0-3-3.87M17 3.13A4 4 0 0 1 17 11" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "Web & App Development",
+    sub: "Websites, web apps, and mobile products — designed and built end to end.",
+    items: [
+      {
+        code: "WEB-01",
+        title: "Business Websites",
+        desc: "Corporate sites, landing pages, and CMS builds that load fast and convert visitors.",
+        tags: ["Websites", "CMS", "Landing pages"],
+        icon: (
+          <>
+            <rect x="3" y="4" width="18" height="14" rx="2" />
+            <path d="M3 8h18M6.5 6h.01M9 6h.01" />
+          </>
+        ),
+      },
+      {
+        code: "WEB-02",
+        title: "Web Applications",
+        desc: "Dashboards, portals, and SaaS apps built on modern, scalable stacks.",
+        tags: ["Dashboards", "Portals", "SaaS"],
+        icon: (
+          <>
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </>
+        ),
+      },
+      {
+        code: "WEB-03",
+        title: "Mobile Apps",
+        desc: "Native and cross-platform iOS/Android apps with clean, usable UX.",
+        tags: ["iOS", "Android", "Cross-platform"],
+        icon: (
+          <>
+            <rect x="7" y="2" width="10" height="20" rx="2" />
+            <path d="M11 18h2" />
+          </>
+        ),
+      },
+      {
+        code: "WEB-04",
+        title: "E-commerce Stores",
+        desc: "Online stores with carts, payments, and inventory wired to your operations.",
+        tags: ["Storefront", "Payments", "Catalog"],
+        icon: (
+          <>
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path d="M3 3h2l2.4 12.6a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 7H6" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "AI",
+    sub: "Applied AI that automates work and surfaces decisions.",
+    items: [
+      {
+        code: "AI-01",
+        title: "AI Chatbots & Assistants",
+        desc: "Conversational assistants and support bots that resolve queries around the clock.",
+        tags: ["Chatbots", "Assistants", "Support"],
+        icon: <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z" />,
+      },
+      {
+        code: "AI-02",
+        title: "Predictive Analytics",
+        desc: "Forecasts and scoring models that turn history into forward-looking signals.",
+        tags: ["Forecasting", "Scoring", "Modeling"],
+        icon: (
+          <>
+            <path d="M23 6l-9.5 9.5-5-5L1 18" />
+            <path d="M17 6h6v6" />
+          </>
+        ),
+      },
+      {
+        code: "AI-03",
+        title: "Computer Vision",
+        desc: "Image and video models for detection, inspection, and recognition.",
+        tags: ["Detection", "OCR", "Inspection"],
+        icon: (
+          <>
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </>
+        ),
+      },
+      {
+        code: "AI-04",
+        title: "Generative AI & LLM Automation",
+        desc: "LLM-driven workflows, RAG systems, and document automation that cut manual effort.",
+        tags: ["LLM", "RAG", "Automation"],
+        icon: (
+          <>
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <rect x="9" y="9" width="6" height="6" />
+            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "Marketing Solution",
+    sub: "Growth campaigns and analytics that move the funnel.",
+    items: [
+      {
+        code: "MKT-01",
+        title: "SEO & Content",
+        desc: "Search optimization and content strategy that grow qualified organic traffic.",
+        tags: ["SEO", "Content", "Organic"],
+        icon: (
+          <>
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+          </>
+        ),
+      },
+      {
+        code: "MKT-02",
+        title: "Performance Campaigns",
+        desc: "Paid search and social campaigns tuned for ROAS and lower acquisition cost.",
+        tags: ["Paid ads", "ROAS", "Funnels"],
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="5" />
+            <circle cx="12" cy="12" r="1" />
+          </>
+        ),
+      },
+      {
+        code: "MKT-03",
+        title: "Social Media Management",
+        desc: "Content calendars, community, and social growth across the channels that matter.",
+        tags: ["Social", "Community", "Content"],
+        icon: (
+          <>
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+          </>
+        ),
+      },
+      {
+        code: "MKT-04",
+        title: "Marketing Analytics & CRO",
+        desc: "Attribution, dashboards, and conversion-rate optimization that compound results.",
+        tags: ["Attribution", "CRO", "Dashboards"],
+        icon: (
+          <>
+            <path d="M21 15.5A9 9 0 1 1 8.5 3" />
+            <path d="M21.2 8A9 9 0 0 0 16 2.8V8Z" />
+          </>
+        ),
+      },
+    ],
+  },
+];
+
 // Reusable brand logo mark (Ebkan Tech logo image)
 function LogoMark() {
   return <img className="mark" src="/ebkan-tech-logo.png" alt="Ebkan Tech logo" />;
@@ -220,156 +517,39 @@ export default function App() {
             <div className="sec-head">
               <div>
                 <span className="eyebrow">Scope of business</span>
-                <h2>Data science, ERP and CRM — for the industries that run on data.</h2>
+                <h2>Data science, ERP, web, AI and marketing — organized by category.</h2>
               </div>
               <p>
-                Machine learning and analytics where it moves the number, plus ERP/CRM platforms
-                shaped to your operations.
+                Each category below groups the services we deliver — machine learning and analytics,
+                ERP/CRM platforms, web &amp; app builds, applied AI, and growth marketing.
               </p>
             </div>
-            <div className="cap-grid">
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M3 3v18h18" />
-                  <path d="M7 14l3-4 3 3 5-7" />
-                </svg>
-                <div className="code">DS-01</div>
-                <h3>Supply Chain &amp; Demand Forecasting</h3>
-                <p>Demand prediction, inventory optimization, and supplier analytics to cut stockouts and holding cost.</p>
-                <ul>
-                  <li>Forecasting</li>
-                  <li>Optimization</li>
-                  <li>Planning</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <circle cx="6" cy="18" r="2" />
-                  <circle cx="18" cy="6" r="2" />
-                  <path d="M8 18h6a3 3 0 0 0 3-3V8M6 16V9a3 3 0 0 1 3-3h6" />
-                </svg>
-                <div className="code">DS-02</div>
-                <h3>Logistics &amp; Route Optimization</h3>
-                <p>Fleet, routing, and delivery models that lower cost-per-shipment and improve on-time rates.</p>
-                <ul>
-                  <li>Routing</li>
-                  <li>ETA models</li>
-                  <li>Fleet</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z" />
-                  <path d="M12 8v4m-2-2h4" />
-                </svg>
-                <div className="code">DS-03</div>
-                <h3>Hospital &amp; Healthcare Analytics</h3>
-                <p>Patient flow, bed occupancy, and resource forecasting to improve outcomes and utilization.</p>
-                <ul>
-                  <li>Patient flow</li>
-                  <li>Capacity</li>
-                  <li>Reporting</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
-                  <path d="M7 21v-8h10v8M7 13h10" />
-                </svg>
-                <div className="code">DS-04</div>
-                <h3>Warehouse &amp; Inventory Intelligence</h3>
-                <p>Slotting, stock movement, and replenishment analytics for faster, leaner warehouse operations.</p>
-                <ul>
-                  <li>Slotting</li>
-                  <li>Replenishment</li>
-                  <li>Stock</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M22 11l-3 3-2-2" />
-                </svg>
-                <div className="code">DS-05</div>
-                <h3>Customer Churn Prediction</h3>
-                <p>Churn models and retention scoring that flag at-risk customers before they leave.</p>
-                <ul>
-                  <li>Churn ML</li>
-                  <li>Segmentation</li>
-                  <li>Retention</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                  <path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
-                </svg>
-                <div className="code">DS-06</div>
-                <h3>E-commerce Sales Analytics &amp; BI</h3>
-                <p>Sales reports, cohort analysis, and revenue dashboards that make performance readable at a glance.</p>
-                <ul>
-                  <li>Sales reports</li>
-                  <li>Dashboards</li>
-                  <li>Cohorts</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <span className="badge">Delivered</span>
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2" />
-                </svg>
-                <div className="code">ERP-07</div>
-                <h3>Solar EPC ERP</h3>
-                <p>End-to-end ERP for solar EPC — project costing, procurement, site progress, and commissioning.</p>
-                <ul>
-                  <li>Costing</li>
-                  <li>Procurement</li>
-                  <li>Site progress</li>
-                  <li>Commissioning</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <span className="badge">Delivered</span>
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M3 21h18M6 21V8l6-4 6 4v13" />
-                  <path d="M10 21v-5h4v5M9 11h.01M15 11h.01" />
-                </svg>
-                <div className="code">ERP-08</div>
-                <h3>Construction ERP</h3>
-                <p>Construction ERP covering budgets, BOQ, subcontractors, inventory, and progress billing.</p>
-                <ul>
-                  <li>BOQ</li>
-                  <li>Subcontractors</li>
-                  <li>Inventory</li>
-                  <li>Progress billing</li>
-                </ul>
-              </article>
-
-              <article className="cap">
-                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
-                  <circle cx="10" cy="7" r="3" />
-                  <path d="M21 21v-2a4 4 0 0 0-3-3.87M17 3.13A4 4 0 0 1 17 11" />
-                </svg>
-                <div className="code">CRM-09</div>
-                <h3>CRM Solutions</h3>
-                <p>Customer relationship platforms — pipeline, lead scoring, and reporting tied to your sales process.</p>
-                <ul>
-                  <li>Pipeline</li>
-                  <li>Lead scoring</li>
-                  <li>Reports</li>
-                </ul>
-              </article>
-            </div>
+            {SCOPE.map((group) => (
+              <div className="cap-cat-group" key={group.cat}>
+                <div className="cap-cat">
+                  <h3 className="cap-cat-title">{group.cat}</h3>
+                  <p className="cap-cat-sub">{group.sub}</p>
+                </div>
+                <div className="cap-grid">
+                  {group.items.map((it) => (
+                    <article className="cap" key={it.code}>
+                      {it.badge && <span className="badge">{it.badge}</span>}
+                      <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                        {it.icon}
+                      </svg>
+                      <div className="code">{it.code}</div>
+                      <h3>{it.title}</h3>
+                      <p>{it.desc}</p>
+                      <ul>
+                        {it.tags.map((t) => (
+                          <li key={t}>{t}</li>
+                        ))}
+                      </ul>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -817,10 +997,10 @@ export default function App() {
             <div className="col">
               <h6>Services</h6>
               <a href="#scope">Data science &amp; ML</a>
-              <a href="#scope">Analytics &amp; BI</a>
-              <a href="#delivered">Solar EPC ERP</a>
-              <a href="#delivered">Construction ERP</a>
-              <a href="#scope">CRM solutions</a>
+              <a href="#scope">ERP &amp; CRM</a>
+              <a href="#scope">Web &amp; app development</a>
+              <a href="#scope">AI solutions</a>
+              <a href="#scope">Marketing solutions</a>
             </div>
             <div className="col">
               <h6>Company</h6>

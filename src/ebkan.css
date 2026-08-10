@@ -111,11 +111,17 @@ section{padding:74px 0}
 
 /* ---------- SCOPE / CAPABILITY INDEX ---------- */
 .scope{background:var(--paper-2)}
-.cap-cat-group{margin-top:44px}
-.cap-cat-group:first-of-type{margin-top:0}
-.cap-cat{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:0 0 16px}
-.cap-cat-title{font-size:clamp(1.15rem,2.2vw,1.45rem);font-weight:800;letter-spacing:-.02em;margin:0}
-.cap-cat-sub{color:var(--muted);font-size:.9rem;margin:0}
+.cat-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 28px}
+@media(max-width:900px){.cat-tabs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.cat-tabs{grid-template-columns:1fr}}
+.cat-tab{display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 18px 16px;
+  transition:border-color .2s ease,background .2s ease,transform .1s ease}
+.cat-tab:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.cat-tab.is-active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.cat-tab-name{font-size:1.08rem;font-weight:780;letter-spacing:-.02em;color:var(--ink)}
+.cat-tab-sub{color:var(--muted);font-size:.86rem;line-height:1.4}
+.cat-tab-meta{margin-top:2px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--accent)}
 .cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
   border:1px solid var(--line);border-radius:6px;overflow:hidden}
 @media(max-width:900px){.cap-grid{grid-template-columns:repeat(2,1fr)}}

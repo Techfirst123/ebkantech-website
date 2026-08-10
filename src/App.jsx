@@ -308,6 +308,7 @@ function LogoMark() {
 export default function App() {
   const [theme, setTheme] = useState(null); // null = follow system
   const [note, setNote] = useState({ text: DEFAULT_NOTE, color: undefined });
+  const [activeScope, setActiveScope] = useState(0); // selected business category
   const canvasRef = useRef(null);
 
   // Apply the chosen theme to <html data-theme="…"> (mirrors the old toggle)
@@ -524,32 +525,43 @@ export default function App() {
                 ERP/CRM platforms, web &amp; app builds, applied AI, and growth marketing.
               </p>
             </div>
-            {SCOPE.map((group) => (
-              <div className="cap-cat-group" key={group.cat}>
-                <div className="cap-cat">
-                  <h3 className="cap-cat-title">{group.cat}</h3>
-                  <p className="cap-cat-sub">{group.sub}</p>
-                </div>
-                <div className="cap-grid">
-                  {group.items.map((it) => (
-                    <article className="cap" key={it.code}>
-                      {it.badge && <span className="badge">{it.badge}</span>}
-                      <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-                        {it.icon}
-                      </svg>
-                      <div className="code">{it.code}</div>
-                      <h3>{it.title}</h3>
-                      <p>{it.desc}</p>
-                      <ul>
-                        {it.tags.map((t) => (
-                          <li key={t}>{t}</li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            ))}
+            <div className="cat-tabs" role="tablist" aria-label="Business categories">
+              {SCOPE.map((group, i) => (
+                <button
+                  type="button"
+                  key={group.cat}
+                  className={"cat-tab" + (i === activeScope ? " is-active" : "")}
+                  onClick={() => setActiveScope(i)}
+                  role="tab"
+                  aria-selected={i === activeScope}
+                >
+                  <span className="cat-tab-name">{group.cat}</span>
+                  <span className="cat-tab-sub">{group.sub}</span>
+                  <span className="cat-tab-meta">
+                    {group.items.length} {group.items.length === 1 ? "service" : "services"} →
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="cap-grid" role="tabpanel">
+              {SCOPE[activeScope].items.map((it) => (
+                <article className="cap" key={it.code}>
+                  {it.badge && <span className="badge">{it.badge}</span>}
+                  <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    {it.icon}
+                  </svg>
+                  <div className="code">{it.code}</div>
+                  <h3>{it.title}</h3>
+                  <p>{it.desc}</p>
+                  <ul>
+                    {it.tags.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 

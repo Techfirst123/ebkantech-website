@@ -8,6 +8,13 @@ const SCOPE = [
   {
     cat: "Data Science",
     sub: "Machine learning and analytics where it moves the number.",
+    icon: (
+      <>
+        <ellipse cx="12" cy="5" rx="8" ry="3" />
+        <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+        <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+      </>
+    ),
     items: [
       {
         code: "DS-01",
@@ -88,6 +95,14 @@ const SCOPE = [
   {
     cat: "ERP",
     sub: "ERP platforms shaped to how your operations actually run.",
+    icon: (
+      <>
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </>
+    ),
     items: [
       {
         code: "ERP-01",
@@ -120,6 +135,13 @@ const SCOPE = [
   {
     cat: "CRM",
     sub: "Customer platforms tied directly to your sales process.",
+    icon: (
+      <>
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <circle cx="9" cy="10" r="2" />
+        <path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 9h4M15 13h4" />
+      </>
+    ),
     items: [
       {
         code: "CRM-01",
@@ -139,6 +161,7 @@ const SCOPE = [
   {
     cat: "Web & App Development",
     sub: "Websites, web apps, and mobile products — designed and built end to end.",
+    icon: <path d="M8 6l-6 6 6 6M16 6l6 6-6 6" />,
     items: [
       {
         code: "WEB-01",
@@ -194,6 +217,12 @@ const SCOPE = [
   {
     cat: "AI",
     sub: "Applied AI that automates work and surfaces decisions.",
+    icon: (
+      <>
+        <path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3L12 3Z" />
+        <path d="M18.5 14l.8 2 .7 1.9-2.1-.6-2.1.6.9-2-.9-1.9 2.1.6Z" />
+      </>
+    ),
     items: [
       {
         code: "AI-01",
@@ -244,6 +273,12 @@ const SCOPE = [
   {
     cat: "Marketing Solution",
     sub: "Growth campaigns and analytics that move the funnel.",
+    icon: (
+      <>
+        <path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1Z" />
+        <path d="M16 8a5 5 0 0 1 0 8" />
+      </>
+    ),
     items: [
       {
         code: "MKT-01",
@@ -535,6 +570,9 @@ export default function App() {
                   role="tab"
                   aria-selected={i === activeScope}
                 >
+                  <svg className="cat-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    {group.icon}
+                  </svg>
                   <span className="cat-tab-name">{group.cat}</span>
                   <span className="cat-tab-sub">{group.sub}</span>
                   <span className="cat-tab-meta">

@@ -63,7 +63,7 @@ header.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--p
   backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.06rem;letter-spacing:-.02em}
-.mark{width:26px;height:26px;flex:0 0 auto;display:block}
+.mark{width:26px;height:26px;flex:0 0 auto;display:block;object-fit:contain;border-radius:4px}
 .brand small{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;color:var(--meta);
   font-weight:600;text-transform:uppercase;align-self:center}
 nav.links{display:flex;gap:26px;align-items:center}

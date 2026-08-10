@@ -3,20 +3,9 @@ import { useEffect, useRef, useState } from "react";
 const DEFAULT_NOTE =
   "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
 
-// Reusable brand logo mark (rising-trend glyph)
+// Reusable brand logo mark (Ebkan Tech logo image)
 function LogoMark() {
-  return (
-    <svg className="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <rect x="1" y="1" width="30" height="30" rx="4" fill="var(--ink)" />
-      <path
-        d="M8 22V10m0 12 5-6 4 3 7-9"
-        stroke="var(--accent)"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+  return <img className="mark" src="/ebkan-tech-logo.png" alt="Ebkan Tech logo" />;
 }
 
 export default function App() {

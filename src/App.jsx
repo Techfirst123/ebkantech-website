@@ -229,7 +229,9 @@ const SCOPE = [
         title: "AI Chatbots & Assistants",
         desc: "Conversational assistants and support bots that resolve queries around the clock.",
         tags: ["Chatbots", "Assistants", "Support"],
-        icon: <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z" />,
+        icon: (
+          <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z" />
+        ),
       },
       {
         code: "AI-02",
@@ -337,11 +339,14 @@ const SCOPE = [
 
 // Reusable brand logo mark (Ebkan Tech logo image)
 function LogoMark() {
-  return <img className="mark" src="/ebkan-tech-logo.png" alt="Ebkan Tech logo" />;
+  return (
+    <img className="mark" src="/ebkan-tech-logo.png" alt="Ebkan Tech logo" />
+  );
 }
 
 export default function App() {
   const [theme, setTheme] = useState(null); // null = follow system
+  const [menuOpen, setMenuOpen] = useState(false);
   const [note, setNote] = useState({ text: DEFAULT_NOTE, color: undefined });
   const [activeScope, setActiveScope] = useState(0); // selected business category
   const canvasRef = useRef(null);
@@ -354,7 +359,9 @@ export default function App() {
   const toggleTheme = () => {
     const current =
       theme ??
-      (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light");
+      (window.matchMedia("(prefers-color-scheme:dark)").matches
+        ? "dark"
+        : "light");
     setTheme(current === "dark" ? "light" : "dark");
   };
 
@@ -371,8 +378,9 @@ export default function App() {
     const reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
 
     const cssVar = (name, fallback) =>
-      getComputedStyle(document.documentElement).getPropertyValue(name).trim() ||
-      fallback;
+      getComputedStyle(document.documentElement)
+        .getPropertyValue(name)
+        .trim() || fallback;
 
     const build = () => {
       nodes = [];
@@ -455,13 +463,16 @@ export default function App() {
     const message = (data.get("message") || "").trim();
 
     if (!name || !email) {
-      setNote({ text: "Please add your name and email first.", color: "var(--accent)" });
+      setNote({
+        text: "Please add your name and email first.",
+        color: "var(--accent)",
+      });
       return;
     }
     const subject = `Enquiry: ${service} — ${name}${company ? ` (${company})` : ""}`;
     const body = `Name: ${name}\nCompany: ${company}\nEmail: ${email}\nService: ${service}\n\n${message}\n`;
     window.location.href = `mailto:sales@ebkantech.com?subject=${encodeURIComponent(
-      subject
+      subject,
     )}&body=${encodeURIComponent(body)}`;
     setNote({
       text: "Your email app should now open with the message ready to send.",
@@ -482,20 +493,62 @@ export default function App() {
         <div className="wrap nav-in">
           <a className="brand" href="#top">
             <LogoMark />
-            Ebkan Tech <small>/ data &amp; ERP</small>
+            <span className="brand-text">
+              Ebkan Tech <small>/ data &amp; ERP</small>
+            </span>
           </a>
-          <nav className="links">
-            <a href="#scope">Services</a>
-            <a href="#process">How we work</a>
-            <a href="#delivered">Delivered</a>
-            <a href="#about">About</a>
-            <button className="theme-t" id="themeBtn" type="button" onClick={toggleTheme}>
+
+          <div className="nav-right">
+            {/* Theme - hamburger ke bahar */}
+            <button
+              className="theme-t"
+              id="themeBtn"
+              type="button"
+              onClick={toggleTheme}
+            >
               ◐ theme
             </button>
-            <a href="#contact" className="btn keep">
-              Talk to us
-            </a>
-          </nav>
+
+            {/* Desktop + mobile menu */}
+            <nav className={`links ${menuOpen ? "menu-open" : ""}`}>
+              <a href="#scope" onClick={() => setMenuOpen(false)}>
+                Services
+              </a>
+
+              <a href="#process" onClick={() => setMenuOpen(false)}>
+                How we work
+              </a>
+
+              <a href="#delivered" onClick={() => setMenuOpen(false)}>
+                Delivered
+              </a>
+
+              <a href="#about" onClick={() => setMenuOpen(false)}>
+                About
+              </a>
+
+              <a
+                href="#contact"
+                className="btn keep"
+                onClick={() => setMenuOpen(false)}
+              >
+                Talk to us
+              </a>
+            </nav>
+
+            {/* Hamburger */}
+            <button
+              className={`hamburger ${menuOpen ? "is-open" : ""}`}
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -508,15 +561,19 @@ export default function App() {
               <span className="chip mono">
                 DATA SCIENCE · <b>ERP</b> · CRM
               </span>
-              <span className="chip mono">Delivered: Solar EPC &amp; Construction ERP</span>
+              <span className="chip mono">
+                Delivered: Solar EPC &amp; Construction ERP
+              </span>
             </div>
             <h1>
-              We turn your business data into <span className="amp">decisions</span>.
+              We turn your business data into{" "}
+              <span className="amp">decisions</span>.
             </h1>
             <p className="lede">
-              Ebkan Tech Pvt Ltd builds data science solutions and industry ERP/CRM systems —
-              forecasting supply chains, cutting churn, streamlining warehouses and hospitals, and
-              running purpose-built ERPs for solar EPC and construction.
+              Ebkan Tech Pvt Ltd builds data science solutions and industry
+              ERP/CRM systems — forecasting supply chains, cutting churn,
+              streamlining warehouses and hospitals, and running purpose-built
+              ERPs for solar EPC and construction.
             </p>
             <div className="hero-cta">
               <a href="#contact" className="btn">
@@ -553,30 +610,50 @@ export default function App() {
             <div className="sec-head">
               <div>
                 <span className="eyebrow">Scope of business</span>
-                <h2>Data science, ERP, web, AI and marketing — organized by category.</h2>
+                <h2>
+                  Data science, ERP, web, AI and marketing — organized by
+                  category.
+                </h2>
               </div>
               <p>
-                Each category below groups the services we deliver — machine learning and analytics,
-                ERP/CRM platforms, web &amp; app builds, applied AI, and growth marketing.
+                Each category below groups the services we deliver — machine
+                learning and analytics, ERP/CRM platforms, web &amp; app builds,
+                applied AI, and growth marketing.
               </p>
             </div>
-            <div className="cat-tabs" role="tablist" aria-label="Business categories">
+            <div
+              className="cat-tabs"
+              role="tablist"
+              aria-label="Business categories"
+            >
               {SCOPE.map((group, i) => (
                 <button
                   type="button"
                   key={group.cat}
-                  className={"cat-tab" + (i === activeScope ? " is-active" : "")}
+                  className={
+                    "cat-tab" + (i === activeScope ? " is-active" : "")
+                  }
                   onClick={() => setActiveScope(i)}
                   role="tab"
                   aria-selected={i === activeScope}
                 >
-                  <svg className="cat-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg
+                    className="cat-tab-ic"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
                     {group.icon}
                   </svg>
                   <span className="cat-tab-name">{group.cat}</span>
                   <span className="cat-tab-sub">{group.sub}</span>
                   <span className="cat-tab-meta">
-                    {group.items.length} {group.items.length === 1 ? "service" : "services"} →
+                    {group.items.length}{" "}
+                    {group.items.length === 1 ? "service" : "services"} →
                   </span>
                 </button>
               ))}
@@ -586,7 +663,13 @@ export default function App() {
               {SCOPE[activeScope].items.map((it) => (
                 <article className="cap" key={it.code}>
                   {it.badge && <span className="badge">{it.badge}</span>}
-                  <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <svg
+                    className="ic"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  >
                     {it.icon}
                   </svg>
                   <div className="code">{it.code}</div>
@@ -611,16 +694,20 @@ export default function App() {
                 <span className="eyebrow">Delivered work</span>
                 <h2>Two industry ERPs, shipped and running.</h2>
               </div>
-              <p>Purpose-built platforms — not generic templates — for two demanding, project-driven verticals.</p>
+              <p>
+                Purpose-built platforms — not generic templates — for two
+                demanding, project-driven verticals.
+              </p>
             </div>
             <div className="case-grid">
               <div className="case">
                 <span className="tag">Solar EPC · ERP</span>
                 <h4>Solar EPC ERP</h4>
                 <p>
-                  A single system for solar engineering, procurement and construction: project
-                  costing, material procurement, on-site progress tracking, and commissioning —
-                  connecting the finance team, the warehouse, and the field.
+                  A single system for solar engineering, procurement and
+                  construction: project costing, material procurement, on-site
+                  progress tracking, and commissioning — connecting the finance
+                  team, the warehouse, and the field.
                 </p>
                 <div className="facts">
                   <div className="f">
@@ -641,9 +728,10 @@ export default function App() {
                 <span className="tag">Construction · ERP</span>
                 <h4>Construction ERP</h4>
                 <p>
-                  An ERP shaped around how construction firms actually operate: BOQ and estimation,
-                  subcontractor management, inventory and stores, progress billing, and live
-                  budget-vs-actual across every project.
+                  An ERP shaped around how construction firms actually operate:
+                  BOQ and estimation, subcontractor management, inventory and
+                  stores, progress billing, and live budget-vs-actual across
+                  every project.
                 </p>
                 <div className="facts">
                   <div className="f">
@@ -672,33 +760,51 @@ export default function App() {
                 <span className="eyebrow">How we work</span>
                 <h2>From raw data to a system you rely on.</h2>
               </div>
-              <p>Five stages, run in order. Each ends in something you can see, test, or ship.</p>
+              <p>
+                Five stages, run in order. Each ends in something you can see,
+                test, or ship.
+              </p>
             </div>
             <div className="proc-grid">
               <div className="step">
                 <div className="num">01 · Understand</div>
                 <h4>Define the outcome</h4>
-                <p>We map your data sources, the decision to improve, and how success will be measured.</p>
+                <p>
+                  We map your data sources, the decision to improve, and how
+                  success will be measured.
+                </p>
               </div>
               <div className="step">
                 <div className="num">02 · Prepare</div>
                 <h4>Clean &amp; model data</h4>
-                <p>Pipelines, warehousing, and feature engineering to make the data trustworthy.</p>
+                <p>
+                  Pipelines, warehousing, and feature engineering to make the
+                  data trustworthy.
+                </p>
               </div>
               <div className="step">
                 <div className="num">03 · Build</div>
                 <h4>Model &amp; develop</h4>
-                <p>ML models or ERP/CRM modules built in increments, reviewed with you each sprint.</p>
+                <p>
+                  ML models or ERP/CRM modules built in increments, reviewed
+                  with you each sprint.
+                </p>
               </div>
               <div className="step">
                 <div className="num">04 · Deploy</div>
                 <h4>Ship to production</h4>
-                <p>Dashboards, APIs, or full systems deployed with testing and clean handover.</p>
+                <p>
+                  Dashboards, APIs, or full systems deployed with testing and
+                  clean handover.
+                </p>
               </div>
               <div className="step">
                 <div className="num">05 · Support</div>
                 <h4>Monitor &amp; improve</h4>
-                <p>We track accuracy and usage, retrain models, and evolve the roadmap with you.</p>
+                <p>
+                  We track accuracy and usage, retrain models, and evolve the
+                  roadmap with you.
+                </p>
               </div>
             </div>
           </div>
@@ -712,7 +818,10 @@ export default function App() {
                 <span className="eyebrow">Technology</span>
                 <h2>The tools behind the work.</h2>
               </div>
-              <p>Proven data science, BI, and platform tooling — chosen for accuracy, scale, and maintainability.</p>
+              <p>
+                Proven data science, BI, and platform tooling — chosen for
+                accuracy, scale, and maintainability.
+              </p>
             </div>
             <div className="stack-cols">
               <div>
@@ -766,9 +875,15 @@ export default function App() {
             <div>
               <span className="eyebrow">Where we work</span>
               <h2 style={h2Compact}>Industries we serve</h2>
-              <p style={{ color: "var(--muted)", maxWidth: "44ch", margin: "0 0 22px" }}>
-                Domain context shortens every project. These are the sectors our data and ERP work
-                lives in.
+              <p
+                style={{
+                  color: "var(--muted)",
+                  maxWidth: "44ch",
+                  margin: "0 0 22px",
+                }}
+              >
+                Domain context shortens every project. These are the sectors our
+                data and ERP work lives in.
               </p>
               <div className="ind-list">
                 <span>Supply Chain &amp; Logistics</span>
@@ -788,28 +903,40 @@ export default function App() {
                   <div className="mc">M-A</div>
                   <div>
                     <h4>Fixed-scope project</h4>
-                    <p>Defined deliverable — a model, dashboard, or ERP module — with milestones and a fixed price.</p>
+                    <p>
+                      Defined deliverable — a model, dashboard, or ERP module —
+                      with milestones and a fixed price.
+                    </p>
                   </div>
                 </div>
                 <div className="model">
                   <div className="mc">M-B</div>
                   <div>
                     <h4>Data science retainer</h4>
-                    <p>An ongoing analytics partner that keeps models accurate and reporting fresh.</p>
+                    <p>
+                      An ongoing analytics partner that keeps models accurate
+                      and reporting fresh.
+                    </p>
                   </div>
                 </div>
                 <div className="model">
                   <div className="mc">M-C</div>
                   <div>
                     <h4>ERP / CRM implementation</h4>
-                    <p>End-to-end rollout — configuration, data migration, training, and go-live support.</p>
+                    <p>
+                      End-to-end rollout — configuration, data migration,
+                      training, and go-live support.
+                    </p>
                   </div>
                 </div>
                 <div className="model">
                   <div className="mc">M-D</div>
                   <div>
                     <h4>Managed support &amp; AMC</h4>
-                    <p>We run and evolve your platform under a support agreement so your team can focus elsewhere.</p>
+                    <p>
+                      We run and evolve your platform under a support agreement
+                      so your team can focus elsewhere.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -825,37 +952,51 @@ export default function App() {
                 <span className="eyebrow">About us</span>
                 <h2>A data-driven team, close to your operations.</h2>
                 <p>
-                  Ebkan Tech Pvt Ltd is a data science and enterprise software company. We help
-                  businesses in supply chain, healthcare, e-commerce, energy and construction make
-                  better decisions with their own data — and run the ERP and CRM systems those
+                  Ebkan Tech Pvt Ltd is a data science and enterprise software
+                  company. We help businesses in supply chain, healthcare,
+                  e-commerce, energy and construction make better decisions with
+                  their own data — and run the ERP and CRM systems those
                   decisions depend on.
                 </p>
                 <p>
-                  We work close to the problem: understanding how a warehouse actually moves stock,
-                  how a solar project gets costed, or why customers churn — then building models and
-                  systems that fit that reality, not a template.
+                  We work close to the problem: understanding how a warehouse
+                  actually moves stock, how a solar project gets costed, or why
+                  customers churn — then building models and systems that fit
+                  that reality, not a template.
                 </p>
               </div>
               <div className="vals">
                 <div className="val">
                   <div className="vt">01</div>
                   <h4>Domain-first</h4>
-                  <p>We learn your process before we model it. Context beats a fancy algorithm.</p>
+                  <p>
+                    We learn your process before we model it. Context beats a
+                    fancy algorithm.
+                  </p>
                 </div>
                 <div className="val">
                   <div className="vt">02</div>
                   <h4>Measurable impact</h4>
-                  <p>Every engagement targets a number: cost, time, accuracy, or retention.</p>
+                  <p>
+                    Every engagement targets a number: cost, time, accuracy, or
+                    retention.
+                  </p>
                 </div>
                 <div className="val">
                   <div className="vt">03</div>
                   <h4>Own your systems</h4>
-                  <p>Clean handover, documentation, and training — no lock-in, no black boxes.</p>
+                  <p>
+                    Clean handover, documentation, and training — no lock-in, no
+                    black boxes.
+                  </p>
                 </div>
                 <div className="val">
                   <div className="vt">04</div>
                   <h4>Long-term support</h4>
-                  <p>We stay on to retrain models and evolve platforms as your business grows.</p>
+                  <p>
+                    We stay on to retrain models and evolve platforms as your
+                    business grows.
+                  </p>
                 </div>
               </div>
             </div>
@@ -864,22 +1005,30 @@ export default function App() {
               <span className="eyebrow">The team</span>
               <div className="team-grid">
                 <div className="member">
-                  <div className="avatar" aria-hidden="true">EK</div>
+                  <div className="avatar" aria-hidden="true">
+                    EK
+                  </div>
                   <div className="mn">Founder Name</div>
                   <div className="mr">Founder &amp; CEO</div>
                 </div>
                 <div className="member">
-                  <div className="avatar" aria-hidden="true">DS</div>
+                  <div className="avatar" aria-hidden="true">
+                    DS
+                  </div>
                   <div className="mn">Lead Name</div>
                   <div className="mr">Head of Data Science</div>
                 </div>
                 <div className="member">
-                  <div className="avatar" aria-hidden="true">ER</div>
+                  <div className="avatar" aria-hidden="true">
+                    ER
+                  </div>
                   <div className="mn">Lead Name</div>
                   <div className="mr">ERP Practice Lead</div>
                 </div>
                 <div className="member">
-                  <div className="avatar" aria-hidden="true">BI</div>
+                  <div className="avatar" aria-hidden="true">
+                    BI
+                  </div>
                   <div className="mn">Lead Name</div>
                   <div className="mr">Analytics &amp; BI Lead</div>
                 </div>
@@ -896,12 +1045,18 @@ export default function App() {
                 <span className="eyebrow">Client voices</span>
                 <h2>What partners say about working with us.</h2>
               </div>
-              <p>A few words from the teams we&apos;ve built data and ERP solutions for.</p>
+              <p>
+                A few words from the teams we&apos;ve built data and ERP
+                solutions for.
+              </p>
             </div>
             <div className="q-grid">
               <div className="quote">
                 <div className="qm">“</div>
-                <p>The demand forecasting models cut our stockouts noticeably and gave planning a number they could trust every week.</p>
+                <p>
+                  The demand forecasting models cut our stockouts noticeably and
+                  gave planning a number they could trust every week.
+                </p>
                 <div className="who">
                   <span className="dot">SC</span>
                   <div>
@@ -912,7 +1067,11 @@ export default function App() {
               </div>
               <div className="quote">
                 <div className="qm">“</div>
-                <p>Their Solar EPC ERP finally connected our procurement, finance and site teams in one place. Project visibility is completely different now.</p>
+                <p>
+                  Their Solar EPC ERP finally connected our procurement, finance
+                  and site teams in one place. Project visibility is completely
+                  different now.
+                </p>
                 <div className="who">
                   <span className="dot">SE</span>
                   <div>
@@ -923,7 +1082,10 @@ export default function App() {
               </div>
               <div className="quote">
                 <div className="qm">“</div>
-                <p>The churn model flags at-risk customers early enough for us to act. It&apos;s become part of how the sales team works.</p>
+                <p>
+                  The churn model flags at-risk customers early enough for us to
+                  act. It&apos;s become part of how the sales team works.
+                </p>
                 <div className="who">
                   <span className="dot">EC</span>
                   <div>
@@ -954,7 +1116,11 @@ export default function App() {
                   Have data, a report, or an ERP need? Let&apos;s scope it.
                 </h2>
               </div>
-              <p>Tell us the decision you want to improve or the process you want to digitize. We&apos;ll reply with an approach and a rough timeline.</p>
+              <p>
+                Tell us the decision you want to improve or the process you want
+                to digitize. We&apos;ll reply with an approach and a rough
+                timeline.
+              </p>
             </div>
             <div className="contact-in">
               <div className="cinfo">
@@ -976,7 +1142,10 @@ export default function App() {
                   <div className="cik">Best for</div>
                   <div className="civ">
                     Forecasting, BI, churn, ERP &amp; CRM
-                    <small>Supply chain, hospitals, e-commerce, solar EPC, construction.</small>
+                    <small>
+                      Supply chain, hospitals, e-commerce, solar EPC,
+                      construction.
+                    </small>
                   </div>
                 </div>
               </div>
@@ -984,21 +1153,42 @@ export default function App() {
                 <div className="row">
                   <div className="field">
                     <label htmlFor="cf-name">Your name</label>
-                    <input id="cf-name" name="name" type="text" placeholder="Jane Doe" required />
+                    <input
+                      id="cf-name"
+                      name="name"
+                      type="text"
+                      placeholder="Jane Doe"
+                      required
+                    />
                   </div>
                   <div className="field">
                     <label htmlFor="cf-company">Company</label>
-                    <input id="cf-company" name="company" type="text" placeholder="Acme Ltd" />
+                    <input
+                      id="cf-company"
+                      name="company"
+                      type="text"
+                      placeholder="Acme Ltd"
+                    />
                   </div>
                 </div>
                 <div className="row">
                   <div className="field">
                     <label htmlFor="cf-email">Work email</label>
-                    <input id="cf-email" name="email" type="email" placeholder="you@company.com" required />
+                    <input
+                      id="cf-email"
+                      name="email"
+                      type="email"
+                      placeholder="you@company.com"
+                      required
+                    />
                   </div>
                   <div className="field">
                     <label htmlFor="cf-service">Service of interest</label>
-                    <select id="cf-service" name="service" defaultValue="Data science &amp; forecasting">
+                    <select
+                      id="cf-service"
+                      name="service"
+                      defaultValue="Data science &amp; forecasting"
+                    >
                       <option>Data science &amp; forecasting</option>
                       <option>Logistics / warehouse analytics</option>
                       <option>Healthcare / hospital analytics</option>
@@ -1037,11 +1227,12 @@ export default function App() {
             <div className="foot-brand">
               <a className="brand" href="#top">
                 <LogoMark />
-                Ebkan Tech
+                <span className="title">Ebkan Tech</span>
               </a>
               <p>
-                Ebkan Tech Pvt Ltd — data science, ERP and CRM solutions for supply chain,
-                healthcare, e-commerce, solar EPC and construction.
+                Ebkan Tech Pvt Ltd — data science, ERP and CRM solutions for
+                supply chain, healthcare, e-commerce, solar EPC and
+                construction.
               </p>
             </div>
             <div className="col">

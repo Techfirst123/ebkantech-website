@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import BusinessIntelligenceSection from "./components/BusinessIntelligenceSection";
 
 const DEFAULT_NOTE =
   "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
@@ -659,32 +661,54 @@ export default function App() {
               ))}
             </div>
 
-            <div className="cap-grid" role="tabpanel">
-              {SCOPE[activeScope].items.map((it) => (
-                <article className="cap" key={it.code}>
-                  {it.badge && <span className="badge">{it.badge}</span>}
-                  <svg
-                    className="ic"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
+            <AnimatePresence mode="wait">
+              <motion.div
+                className="cap-grid"
+                role="tabpanel"
+                key={SCOPE[activeScope].cat}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                {SCOPE[activeScope].items.map((it, i) => (
+                  <motion.article
+                    className="cap"
+                    key={it.code}
+                    initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: i * 0.07,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
-                    {it.icon}
-                  </svg>
-                  <div className="code">{it.code}</div>
-                  <h3>{it.title}</h3>
-                  <p>{it.desc}</p>
-                  <ul>
-                    {it.tags.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
+                    {it.badge && <span className="badge">{it.badge}</span>}
+                    <svg
+                      className="ic"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                    >
+                      {it.icon}
+                    </svg>
+                    <div className="code">{it.code}</div>
+                    <h3>{it.title}</h3>
+                    <p>{it.desc}</p>
+                    <ul>
+                      {it.tags.map((t) => (
+                        <li key={t}>{t}</li>
+                      ))}
+                    </ul>
+                  </motion.article>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </section>
+
+        <BusinessIntelligenceSection />
 
         {/* DELIVERED / PROOF */}
         <section className="delivered" id="delivered">
@@ -944,7 +968,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* ABOUT + TEAM */}
+        {/* ABOUT */}
         <section id="about">
           <div className="wrap">
             <div className="about-in">
@@ -997,40 +1021,6 @@ export default function App() {
                     We stay on to retrain models and evolve platforms as your
                     business grows.
                   </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="team">
-              <span className="eyebrow">The team</span>
-              <div className="team-grid">
-                <div className="member">
-                  <div className="avatar" aria-hidden="true">
-                    EK
-                  </div>
-                  <div className="mn">Founder Name</div>
-                  <div className="mr">Founder &amp; CEO</div>
-                </div>
-                <div className="member">
-                  <div className="avatar" aria-hidden="true">
-                    DS
-                  </div>
-                  <div className="mn">Lead Name</div>
-                  <div className="mr">Head of Data Science</div>
-                </div>
-                <div className="member">
-                  <div className="avatar" aria-hidden="true">
-                    ER
-                  </div>
-                  <div className="mn">Lead Name</div>
-                  <div className="mr">ERP Practice Lead</div>
-                </div>
-                <div className="member">
-                  <div className="avatar" aria-hidden="true">
-                    BI
-                  </div>
-                  <div className="mn">Lead Name</div>
-                  <div className="mr">Analytics &amp; BI Lead</div>
                 </div>
               </div>
             </div>

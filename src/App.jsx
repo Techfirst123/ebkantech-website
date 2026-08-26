@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import BusinessIntelligenceSection from "./components/BusinessIntelligenceSection";
 import ScopeCards from "./components/ScopeCards";
 import DeliveredCards from "./components/DeliveredCards";
+import IndustryCards from "./components/IndustryCards";
 
 const DEFAULT_NOTE =
   "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
@@ -431,29 +432,21 @@ export default function App() {
 
         {/* INDUSTRIES + ENGAGEMENT MODELS */}
         <section id="industries">
-          <div className="wrap two">
-            <div>
+          <div className="wrap">
+            <div style={{ marginBottom: "48px" }}>
               <span className="eyebrow">Where we work</span>
               <h2 style={h2Compact}>Industries we serve</h2>
               <p
                 style={{
                   color: "var(--muted)",
-                  maxWidth: "44ch",
-                  margin: "0 0 22px",
+                  maxWidth: "52ch",
+                  margin: "0 0 28px",
                 }}
               >
                 Domain context shortens every project. These are the sectors our
                 data and ERP work lives in.
               </p>
-              <div className="ind-list">
-                <span>Supply Chain &amp; Logistics</span>
-                <span>Healthcare &amp; Hospitals</span>
-                <span>E-commerce &amp; Retail</span>
-                <span>Warehousing</span>
-                <span>Solar &amp; Renewable Energy</span>
-                <span>Construction &amp; Infrastructure</span>
-                <span>Manufacturing</span>
-              </div>
+              <IndustryCards />
             </div>
             <div>
               <span className="eyebrow">Engagement models</span>

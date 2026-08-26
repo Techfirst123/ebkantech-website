@@ -625,36 +625,6 @@ section {
   background: var(--paper-2);
 }
 /* ---------- INDUSTRIES + MODELS ---------- */
-.two {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 54px;
-  align-items: start;
-}
-@media (max-width: 860px) {
-  .two {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-}
-.ind-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-}
-.ind-list span {
-  border: 1px solid var(--line);
-  background: var(--card);
-  padding: 9px 15px;
-  border-radius: 99px;
-  font-size: 0.9rem;
-  color: var(--text);
-  transition: 0.18s;
-}
-.ind-list span:hover {
-  border-color: var(--teal);
-  color: var(--teal);
-}
 .models {
   display: flex;
   flex-direction: column;

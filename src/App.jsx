@@ -6,7 +6,7 @@ import IndustryCards from "./components/IndustryCards";
 import TrustedBy from "./components/TrustedBy";
 
 const DEFAULT_NOTE =
-  "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
+  "We usually reply within one business day.";
 
 // Reusable brand logo mark (Ebkan Tech logo image)
 function LogoMark() {
@@ -122,10 +122,13 @@ export default function App() {
     };
   }, []);
 
-  // Contact form -> compose email (no data sent automatically)
-  const handleSubmit = (e) => {
+  // Contact form -> POST to /api/contact, which emails sales@ebkantech.com
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const name = (data.get("name") || "").trim();
     const email = (data.get("email") || "").trim();
     const company = (data.get("company") || "").trim();
@@ -139,15 +142,30 @@ export default function App() {
       });
       return;
     }
-    const subject = `Enquiry: ${service} — ${name}${company ? ` (${company})` : ""}`;
-    const body = `Name: ${name}\nCompany: ${company}\nEmail: ${email}\nService: ${service}\n\n${message}\n`;
-    window.location.href = `mailto:sales@ebkantech.com?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    setNote({
-      text: "Your email app should now open with the message ready to send.",
-      color: "var(--teal)",
-    });
+
+    setSending(true);
+    setNote({ text: "Sending your enquiry…", color: "var(--muted)" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, company, service, message }),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setNote({
+        text: "Thanks — your enquiry has been sent. We usually reply within one business day.",
+        color: "var(--teal)",
+      });
+      form.reset();
+    } catch (err) {
+      setNote({
+        text: "Something went wrong sending that — please email sales@ebkantech.com directly.",
+        color: "var(--accent)",
+      });
+    } finally {
+      setSending(false);
+    }
   };
 
   const h2Compact = {
@@ -731,8 +749,8 @@ export default function App() {
                     placeholder="A short description of your data, systems, or the outcome you're after."
                   />
                 </div>
-                <button className="btn submit" type="submit">
-                  Send enquiry
+                <button className="btn submit" type="submit" disabled={sending}>
+                  {sending ? "Sending…" : "Send enquiry"}
                 </button>
                 <p className="form-note" style={{ color: note.color }}>
                   {note.text}

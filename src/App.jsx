@@ -3,6 +3,7 @@ import BusinessIntelligenceSection from "./components/BusinessIntelligenceSectio
 import ScopeCards from "./components/ScopeCards";
 import DeliveredCards from "./components/DeliveredCards";
 import IndustryCards from "./components/IndustryCards";
+import TrustedBy from "./components/TrustedBy";
 
 const DEFAULT_NOTE =
   "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
@@ -272,6 +273,8 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        <TrustedBy />
 
         {/* SCOPE / SERVICES */}
         <section className="scope" id="scope">

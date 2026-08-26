@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { motion } from "framer-motion";
+import TechMarquee from "./TechMarquee";
 
 /**
  * Premium accordion-card redesign of "Scope of business".
@@ -96,6 +97,23 @@ const CATEGORIES = [
       "Marketing Analytics & CRO",
     ],
   },
+  {
+    id: "network-cloud-security",
+    name: "Network & Cloud Security",
+    accent: "#3E5C76", // slate-blue
+    icon: (
+      <>
+        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+        <path d="m9 12 2 2 4-4" />
+      </>
+    ),
+    subs: [
+      "Firewall & Network Security",
+      "Cloud Security (Azure/AWS)",
+      "DevOps & Infrastructure Automation",
+    ],
+    showTechMarquee: true,
+  },
 ];
 
 function PlusIndicator({ color, isOpen, isHovered }) {
@@ -174,22 +192,30 @@ function CategoryCard({ category, isOpen, onToggle }) {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         style={{ overflow: "hidden" }}
       >
-        <div className="flex flex-wrap gap-2 px-8 pb-8">
-          {category.subs.map((sub, i) => (
-            <motion.span
-              key={sub}
-              initial={false}
-              animate={
-                isOpen
-                  ? { opacity: 1, y: 0, transition: { duration: 0.3, delay: i * 0.06, ease: "easeOut" } }
-                  : { opacity: 0, y: 6, transition: { duration: 0.15 } }
-              }
-              className="rounded-full px-3.5 py-1.5 font-sans text-xs"
-              style={{ color: REST_TEXT, background: `${category.accent}14` }}
-            >
-              {sub}
-            </motion.span>
-          ))}
+        <div className="px-8 pb-8">
+          <div className="flex flex-wrap gap-2">
+            {category.subs.map((sub, i) => (
+              <motion.span
+                key={sub}
+                initial={false}
+                animate={
+                  isOpen
+                    ? { opacity: 1, y: 0, transition: { duration: 0.3, delay: i * 0.06, ease: "easeOut" } }
+                    : { opacity: 0, y: 6, transition: { duration: 0.15 } }
+                }
+                className="rounded-full px-3.5 py-1.5 font-sans text-xs"
+                style={{ color: REST_TEXT, background: `${category.accent}14` }}
+              >
+                {sub}
+              </motion.span>
+            ))}
+          </div>
+
+          {category.showTechMarquee && (
+            <div className="mt-6">
+              <TechMarquee />
+            </div>
+          )}
         </div>
       </motion.div>
     </div>
@@ -206,7 +232,7 @@ export default function ScopeCards() {
       className="rounded-[28px] p-6 sm:p-8"
       style={{ background: "#F7F7F5" }}
     >
-      <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {CATEGORIES.map((category) => (
           <CategoryCard
             key={category.id}

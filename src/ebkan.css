@@ -1007,6 +1007,40 @@ a.link-underline:hover {
   margin-top: 2px;
 }
 
+/* ---------- TECH MARQUEE (Network & Cloud Security card) ---------- */
+/* Names describe the visual direction badges travel across the row,
+   verified in-browser (not just derived) since translateX sign vs.
+   perceived direction is easy to get backwards. */
+@keyframes marquee-ltr {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes marquee-rtl {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+.marquee-track {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.marquee-track.scroll-ltr {
+  animation-name: marquee-ltr;
+}
+.marquee-track.scroll-rtl {
+  animation-name: marquee-rtl;
+}
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

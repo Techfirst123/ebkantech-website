@@ -1134,6 +1134,7 @@ export default function App() {
                       <option>Solar EPC ERP</option>
                       <option>Construction ERP</option>
                       <option>CRM solution</option>
+                      <option>Laptop service &amp; rental platform</option>
                       <option>Not sure yet</option>
                     </select>
                   </div>

@@ -237,6 +237,28 @@ const PROJECTS = [
     chart: { kind: "line", labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"], values: [4.1, 4.2, 4.0, 4.4, 4.5, 4.6] },
     chartNote: "Feedback scores tracked alongside motivational-plan enrolment — members on an active plan show noticeably higher satisfaction and renewal rates.",
   },
+  {
+    id: "laptop-service-rental",
+    accent: "#8C6B4F",
+    accentDark: "#CBA87E",
+    industry: "IT Hardware Services — Repair & Rental",
+    name: "Laptop Service & Rental Platform",
+    blurb: "Repair ticketing and device rental/leasing management in one operational system.",
+    cycle: ["Intake & diagnosis", "Parts & inventory allocation", "Service / rental dispatch", "Return & QC", "Fleet health & demand forecast"],
+    kpis: [
+      { val: "1,240", lbl: "Devices under management", sub: "612 rental fleet, 628 in repair" },
+      { val: "2.1 days", lbl: "Avg repair turnaround", sub: "-0.8 days vs last quarter" },
+      { val: "84%", lbl: "Rental fleet utilisation", sub: "across 4 branches" },
+      { val: "96%", lbl: "SLA compliance", sub: "trailing 30 days" },
+    ],
+    impact: {
+      stat: "31%",
+      label: "Faster repair turnaround after BI-driven parts forecasting",
+      detail: "Predicting which parts an incoming fault needs before diagnosis is even complete cut average repair time 31% and lifted rental fleet utilisation 14 points, by keeping serviced units back in rotation faster.",
+    },
+    chart: { kind: "line", labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep"], values: [4.2, 3.8, 3.5, 3.0, 2.4, 2.1] },
+    chartNote: "Average repair turnaround plotted against fleet utilisation — as tickets clear faster, more devices cycle back into the rental pool instead of sitting in the service queue.",
+  },
 ];
 
 /* ---------------- card + accordion ---------------- */

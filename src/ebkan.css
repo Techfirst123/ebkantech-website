@@ -27,6 +27,22 @@
     "Liberation Mono", Menlo, monospace;
   --sans: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
+/* ---------- SHARED DARK SURFACE TOKENS ---------- */
+/* One source of truth for every dark panel on the site: the product
+   dashboards, the product pages and the assistant widget. These are
+   deliberately fixed (not theme-reactive) — these surfaces read as
+   embedded product UI regardless of the site's light/dark setting. */
+:root {
+  --surface-bg: #0a0f16;
+  --surface-panel: #121926;
+  --surface-panel-2: #1a2331;
+  --surface-line: rgba(255, 255, 255, 0.09);
+  --surface-text: #e9edf2;
+  --surface-muted: #93a0ae;
+  --surface-meta: #5c6773;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #0b1420;
@@ -1455,12 +1471,12 @@ a.link-underline:hover {
 
 /* ---- dark dashboard shell (fixed palette, independent of site theme) ---- */
 .dd-shell {
-  --dd-bg: #0a0f16;
-  --dd-panel: #121926;
-  --dd-line: rgba(255, 255, 255, 0.09);
-  --dd-text: #e9edf2;
-  --dd-muted: #93a0ae;
-  --dd-meta: #5c6773;
+  --dd-bg: var(--surface-bg);
+  --dd-panel: var(--surface-panel);
+  --dd-line: var(--surface-line);
+  --dd-text: var(--surface-text);
+  --dd-muted: var(--surface-muted);
+  --dd-meta: var(--surface-meta);
   background: var(--dd-bg);
   border-radius: 10px;
   overflow: hidden;
@@ -1706,4 +1722,583 @@ a.link-underline:hover {
   font-size: 0.84rem;
   color: var(--dd-muted);
   line-height: 1.55;
+}
+
+/* ---------- ASSISTANT WIDGET ---------- */
+.aw-root {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+.aw-launcher {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.5);
+}
+@media (prefers-color-scheme: dark) {
+  .aw-launcher {
+    background: var(--accent);
+    color: #0b1420;
+  }
+}
+:root[data-theme="dark"] .aw-launcher {
+  background: var(--accent);
+  color: #0b1420;
+}
+.aw-launcher svg {
+  width: 24px;
+  height: 24px;
+}
+.aw-panel {
+  --awbg: var(--surface-bg);
+  --awpanel: var(--surface-panel);
+  --awline: var(--surface-line);
+  --awtext: var(--surface-text);
+  --awmuted: var(--surface-muted);
+  --awmeta: var(--surface-meta);
+  width: min(360px, calc(100vw - 44px));
+  height: min(520px, calc(100vh - 140px));
+  background: var(--awbg);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.aw-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--awpanel);
+  border-bottom: 1px solid var(--awline);
+}
+.aw-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 22%, var(--awpanel));
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex: 0 0 auto;
+}
+.aw-titles {
+  flex: 1;
+  min-width: 0;
+}
+.aw-title {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--awtext);
+}
+.aw-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--awmuted);
+  margin-top: 2px;
+}
+.aw-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+.aw-close {
+  background: none;
+  border: none;
+  color: var(--awmuted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+}
+.aw-close svg {
+  width: 16px;
+  height: 16px;
+}
+.aw-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.aw-row {
+  display: flex;
+}
+.aw-row.user {
+  justify-content: flex-end;
+}
+.aw-row.assistant {
+  justify-content: flex-start;
+}
+.aw-bubble {
+  max-width: 82%;
+  padding: 10px 13px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--awtext);
+}
+.aw-row.user .aw-bubble {
+  background: var(--awpanel);
+  border: 1px solid var(--awline);
+  border-bottom-right-radius: 2px;
+}
+.aw-row.assistant .aw-bubble {
+  background: color-mix(in srgb, var(--accent) 14%, var(--awpanel));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--awline));
+  border-bottom-left-radius: 2px;
+}
+.aw-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  margin-left: 2px;
+  background: var(--accent);
+  vertical-align: -2px;
+  animation: aw-blink 0.9s steps(2) infinite;
+}
+@keyframes aw-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.aw-typing {
+  display: inline-flex;
+  gap: 4px;
+}
+.aw-typing i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--awmuted);
+  font-style: normal;
+  animation: aw-bounce 1s infinite ease-in-out;
+}
+.aw-typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.aw-typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes aw-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+.aw-suggested {
+  margin-top: 4px;
+}
+.aw-suggested p {
+  font-size: 0.7rem;
+  color: var(--awmeta);
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.aw-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.aw-chip {
+  text-align: left;
+  font-size: 0.78rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--awline);
+  background: var(--awpanel);
+  color: var(--awtext);
+  cursor: pointer;
+}
+.aw-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.aw-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--awline);
+  background: var(--awpanel);
+}
+.aw-input-bar input {
+  flex: 1;
+  background: var(--awbg);
+  border: 1px solid var(--awline);
+  border-radius: 99px;
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  color: var(--awtext);
+  font-family: var(--sans);
+}
+.aw-input-bar input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.aw-send {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #0b1420;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.aw-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.aw-send svg {
+  width: 15px;
+  height: 15px;
+}
+@media (max-width: 480px) {
+  .aw-root {
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
+/* ---------- PRODUCT PAGES ---------- */
+.pp-wrap {
+  padding: 40px 0 90px;
+  background: var(--paper);
+}
+.pp-crumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--meta);
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.pp-crumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.pp-crumb a:hover {
+  color: var(--accent);
+}
+.pp-head {
+  max-width: 760px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--line);
+}
+.pp-title {
+  font-family: var(--sans);
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 12px 0 0;
+}
+.pp-lead {
+  font-size: 1.15rem;
+  color: var(--text);
+  margin: 18px 0 0;
+  line-height: 1.5;
+}
+.pp-intro {
+  font-size: 0.98rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 16px 0 0;
+  max-width: 62ch;
+}
+.pp-head .demo-cta {
+  margin-top: 28px;
+}
+.pp-section {
+  /* The global `section { padding: 74px 0 }` rule would stack with this
+     margin and produce ~200px gaps; margin alone owns the rhythm here. */
+  padding: 0;
+  margin-top: 56px;
+}
+.pp-h2 {
+  font-family: var(--sans);
+  font-size: 1.5rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+}
+.pp-modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.pp-module {
+  background: var(--card);
+  padding: 22px 20px;
+}
+.pp-module h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 7px;
+}
+.pp-module p {
+  font-size: 0.87rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0;
+}
+.pp-section.pp-enquiry {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 36px 32px;
+}
+.pp-enquiry .pp-h2 {
+  margin-bottom: 12px;
+}
+@media (max-width: 640px) {
+  .pp-section.pp-enquiry {
+    padding: 24px 20px;
+  }
+}
+.pp-enquiry .demo-actions {
+  margin-top: 24px;
+}
+.pp-other-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 14px;
+}
+.pp-other {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--p-accent, var(--accent));
+  border-radius: 8px;
+  background: var(--card);
+  text-decoration: none;
+  color: inherit;
+}
+.pp-other:hover {
+  border-color: var(--p-accent, var(--accent));
+}
+.pp-other-industry {
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+.pp-other-name {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.pp-other-blurb {
+  font-size: 0.83rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* shared CTA row — used on demos and product pages */
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.demo-cta.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+.demo-cta.ghost:hover {
+  border-color: var(--p-accent, var(--accent));
+  color: var(--p-accent, var(--accent));
+}
+
+/* ---------- MOBILE OPTIMISATION ---------- */
+/* Findings this addresses, measured at 360/390/414px:
+   - .demo-titles had `flex: 0 0 auto`, so it could not shrink below its
+     text width and pushed the document to 442px wide.
+   - Mono labels rendered at 9.9–10.9px, below comfortable reading size.
+   - Header/nav/footer tap targets were 18–34px tall, under the 44px
+     touch guideline.                                                    */
+
+@media (max-width: 860px) {
+  /* --- the actual overflow fix --- */
+  .demo-titles {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+  }
+  .demo-name,
+  .demo-industry {
+    overflow-wrap: anywhere;
+  }
+  .demo-head {
+    gap: 12px;
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+  .demo-dot {
+    margin-top: 7px;
+  }
+  .demo-chev {
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* --- legibility: nothing below 11px --- */
+  .demo-industry,
+  .dd-eyebrow,
+  .pp-other-industry {
+    font-size: 0.72rem;
+  }
+  .dd-cycle-num,
+  .demo-disclaimer,
+  .dd-bar-label,
+  .dd-url {
+    font-size: 0.7rem;
+  }
+  .dd-kpi .l {
+    font-size: 0.82rem;
+  }
+  .dd-kpi .s,
+  .dd-kb-card small {
+    font-size: 0.74rem;
+  }
+
+  /* --- touch targets --- */
+  .nav .links a,
+  .foot a,
+  .pp-crumb a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .brand,
+  .theme-t {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .demo-cta,
+  .btn {
+    min-height: 46px;
+    padding-inline: 18px;
+  }
+  .aw-chip {
+    min-height: 42px;
+  }
+
+  /* --- comfortable reading measure & spacing --- */
+  .pp-wrap {
+    padding: 24px 0 64px;
+  }
+  .pp-section {
+    margin-top: 40px;
+  }
+  .pp-head {
+    padding-bottom: 32px;
+  }
+  .pp-lead {
+    font-size: 1.05rem;
+  }
+  .dd-impact-stat {
+    font-size: 1.9rem;
+  }
+  .dd-kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .demo-actions .demo-cta {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  /* the assistant launcher shouldn't sit under a thumb-heavy CTA row */
+  .aw-root {
+    right: 14px;
+    bottom: 14px;
+  }
+  .aw-panel {
+    width: calc(100vw - 28px);
+    height: min(70vh, 520px);
+  }
+}
+
+@media (max-width: 400px) {
+  .dd-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  .dd-cycle-node {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Remaining sub-11px labels found by audit at 390px. Kept at 0.72rem
+     (~11.5px), which stays visually secondary but is readable on a phone. */
+  .brand-text small,
+  .hero-meta .l,
+  .cat-tab-meta,
+  .cap .code,
+  .cap ul li,
+  .case .tag,
+  .fn,
+  .vt {
+    font-size: 0.72rem;
+  }
+
+  /* Footer contact link was a 19px tap target. */
+  .civ a,
+  .foot .civ a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* 6-bar BI chart didn't fit 360px at the desktop gap. */
+  .dd-bars {
+    gap: 6px;
+  }
+  .dd-bar {
+    max-width: 30px;
+  }
 }

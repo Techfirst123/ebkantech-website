@@ -5,20 +5,25 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:ssr && node scripts/prerender.mjs",
+    "build:ssr": "vite build --ssr src/entry-server.jsx --outDir dist-ssr",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^2.21.0",
     "framer-motion": "^13.1.1",
+    "fuse.js": "^7.5.0",
+    "groq-sdk": "^1.6.0",
     "lucide-react": "^1.34.0",
     "nodemailer": "^9.0.5",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.3"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^4.3.1",
     "tailwindcss": "^4.3.3",
-    "vite": "^5.4.0"
+    "vite": "^8.2.2"
   }
 }

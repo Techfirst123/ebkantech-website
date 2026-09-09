@@ -1,12 +1,344 @@
 import { useEffect, useRef, useState } from "react";
 import BusinessIntelligenceSection from "./components/BusinessIntelligenceSection";
-import ScopeCards from "./components/ScopeCards";
-import DeliveredCards from "./components/DeliveredCards";
-import IndustryCards from "./components/IndustryCards";
-import TrustedBy from "./components/TrustedBy";
+import ProductDemos from "./components/ProductDemos";
+
 
 const DEFAULT_NOTE =
-  "We usually reply within one business day.";
+  "This opens your email app with the message pre-filled to sales@ebkantech.com — nothing is sent automatically.";
+
+// Scope of business — parent categories, each with its subcategory cards.
+const SCOPE = [
+  {
+    cat: "Data Science",
+    sub: "Machine learning and analytics where it moves the number.",
+    icon: (
+      <>
+        <ellipse cx="12" cy="5" rx="8" ry="3" />
+        <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+        <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+      </>
+    ),
+    items: [
+      {
+        code: "DS-01",
+        title: "Supply Chain & Demand Forecasting",
+        desc: "Demand prediction, inventory optimization, and supplier analytics to cut stockouts and holding cost.",
+        tags: ["Forecasting", "Optimization", "Planning"],
+        icon: (
+          <>
+            <path d="M3 3v18h18" />
+            <path d="M7 14l3-4 3 3 5-7" />
+          </>
+        ),
+      },
+      {
+        code: "DS-02",
+        title: "Logistics & Route Optimization",
+        desc: "Fleet, routing, and delivery models that lower cost-per-shipment and improve on-time rates.",
+        tags: ["Routing", "ETA models", "Fleet"],
+        icon: (
+          <>
+            <circle cx="6" cy="18" r="2" />
+            <circle cx="18" cy="6" r="2" />
+            <path d="M8 18h6a3 3 0 0 0 3-3V8M6 16V9a3 3 0 0 1 3-3h6" />
+          </>
+        ),
+      },
+      {
+        code: "DS-03",
+        title: "Hospital & Healthcare Analytics",
+        desc: "Patient flow, bed occupancy, and resource forecasting to improve outcomes and utilization.",
+        tags: ["Patient flow", "Capacity", "Reporting"],
+        icon: (
+          <>
+            <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z" />
+            <path d="M12 8v4m-2-2h4" />
+          </>
+        ),
+      },
+      {
+        code: "DS-04",
+        title: "Warehouse & Inventory Intelligence",
+        desc: "Slotting, stock movement, and replenishment analytics for faster, leaner warehouse operations.",
+        tags: ["Slotting", "Replenishment", "Stock"],
+        icon: (
+          <>
+            <path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+            <path d="M7 21v-8h10v8M7 13h10" />
+          </>
+        ),
+      },
+      {
+        code: "DS-05",
+        title: "Customer Churn Prediction",
+        desc: "Churn models and retention scoring that flag at-risk customers before they leave.",
+        tags: ["Churn ML", "Segmentation", "Retention"],
+        icon: (
+          <>
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 11l-3 3-2-2" />
+          </>
+        ),
+      },
+      {
+        code: "DS-06",
+        title: "E-commerce Sales Analytics & BI",
+        desc: "Sales reports, cohort analysis, and revenue dashboards that make performance readable at a glance.",
+        tags: ["Sales reports", "Dashboards", "Cohorts"],
+        icon: (
+          <>
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "ERP",
+    sub: "ERP platforms shaped to how your operations actually run.",
+    icon: (
+      <>
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </>
+    ),
+    items: [
+      {
+        code: "ERP-01",
+        title: "Solar EPC ERP",
+        desc: "End-to-end ERP for solar EPC — project costing, procurement, site progress, and commissioning.",
+        tags: ["Costing", "Procurement", "Site progress", "Commissioning"],
+        badge: "Delivered",
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2" />
+          </>
+        ),
+      },
+      {
+        code: "ERP-02",
+        title: "Construction ERP",
+        desc: "Construction ERP covering budgets, BOQ, subcontractors, inventory, and progress billing.",
+        tags: ["BOQ", "Subcontractors", "Inventory", "Progress billing"],
+        badge: "Delivered",
+        icon: (
+          <>
+            <path d="M3 21h18M6 21V8l6-4 6 4v13" />
+            <path d="M10 21v-5h4v5M9 11h.01M15 11h.01" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "CRM",
+    sub: "Customer platforms tied directly to your sales process.",
+    icon: (
+      <>
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <circle cx="9" cy="10" r="2" />
+        <path d="M5.5 16a3.5 3.5 0 0 1 7 0M15 9h4M15 13h4" />
+      </>
+    ),
+    items: [
+      {
+        code: "CRM-01",
+        title: "CRM Solutions",
+        desc: "Customer relationship platforms — pipeline, lead scoring, and reporting tied to your sales process.",
+        tags: ["Pipeline", "Lead scoring", "Reports"],
+        icon: (
+          <>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+            <circle cx="10" cy="7" r="3" />
+            <path d="M21 21v-2a4 4 0 0 0-3-3.87M17 3.13A4 4 0 0 1 17 11" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "Web & App Development",
+    sub: "Websites, web apps, and mobile products — designed and built end to end.",
+    icon: <path d="M8 6l-6 6 6 6M16 6l6 6-6 6" />,
+    items: [
+      {
+        code: "WEB-01",
+        title: "Business Websites",
+        desc: "Corporate sites, landing pages, and CMS builds that load fast and convert visitors.",
+        tags: ["Websites", "CMS", "Landing pages"],
+        icon: (
+          <>
+            <rect x="3" y="4" width="18" height="14" rx="2" />
+            <path d="M3 8h18M6.5 6h.01M9 6h.01" />
+          </>
+        ),
+      },
+      {
+        code: "WEB-02",
+        title: "Web Applications",
+        desc: "Dashboards, portals, and SaaS apps built on modern, scalable stacks.",
+        tags: ["Dashboards", "Portals", "SaaS"],
+        icon: (
+          <>
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </>
+        ),
+      },
+      {
+        code: "WEB-03",
+        title: "Mobile Apps",
+        desc: "Native and cross-platform iOS/Android apps with clean, usable UX.",
+        tags: ["iOS", "Android", "Cross-platform"],
+        icon: (
+          <>
+            <rect x="7" y="2" width="10" height="20" rx="2" />
+            <path d="M11 18h2" />
+          </>
+        ),
+      },
+      {
+        code: "WEB-04",
+        title: "E-commerce Stores",
+        desc: "Online stores with carts, payments, and inventory wired to your operations.",
+        tags: ["Storefront", "Payments", "Catalog"],
+        icon: (
+          <>
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path d="M3 3h2l2.4 12.6a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 7H6" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "AI",
+    sub: "Applied AI that automates work and surfaces decisions.",
+    icon: (
+      <>
+        <path d="M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3L12 3Z" />
+        <path d="M18.5 14l.8 2 .7 1.9-2.1-.6-2.1.6.9-2-.9-1.9 2.1.6Z" />
+      </>
+    ),
+    items: [
+      {
+        code: "AI-01",
+        title: "AI Chatbots & Assistants",
+        desc: "Conversational assistants and support bots that resolve queries around the clock.",
+        tags: ["Chatbots", "Assistants", "Support"],
+        icon: (
+          <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2Z" />
+        ),
+      },
+      {
+        code: "AI-02",
+        title: "Predictive Analytics",
+        desc: "Forecasts and scoring models that turn history into forward-looking signals.",
+        tags: ["Forecasting", "Scoring", "Modeling"],
+        icon: (
+          <>
+            <path d="M23 6l-9.5 9.5-5-5L1 18" />
+            <path d="M17 6h6v6" />
+          </>
+        ),
+      },
+      {
+        code: "AI-03",
+        title: "Computer Vision",
+        desc: "Image and video models for detection, inspection, and recognition.",
+        tags: ["Detection", "OCR", "Inspection"],
+        icon: (
+          <>
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </>
+        ),
+      },
+      {
+        code: "AI-04",
+        title: "Generative AI & LLM Automation",
+        desc: "LLM-driven workflows, RAG systems, and document automation that cut manual effort.",
+        tags: ["LLM", "RAG", "Automation"],
+        icon: (
+          <>
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <rect x="9" y="9" width="6" height="6" />
+            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    cat: "Marketing Solution",
+    sub: "Growth campaigns and analytics that move the funnel.",
+    icon: (
+      <>
+        <path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1Z" />
+        <path d="M16 8a5 5 0 0 1 0 8" />
+      </>
+    ),
+    items: [
+      {
+        code: "MKT-01",
+        title: "SEO & Content",
+        desc: "Search optimization and content strategy that grow qualified organic traffic.",
+        tags: ["SEO", "Content", "Organic"],
+        icon: (
+          <>
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+          </>
+        ),
+      },
+      {
+        code: "MKT-02",
+        title: "Performance Campaigns",
+        desc: "Paid search and social campaigns tuned for ROAS and lower acquisition cost.",
+        tags: ["Paid ads", "ROAS", "Funnels"],
+        icon: (
+          <>
+            <circle cx="12" cy="12" r="9" />
+            <circle cx="12" cy="12" r="5" />
+            <circle cx="12" cy="12" r="1" />
+          </>
+        ),
+      },
+      {
+        code: "MKT-03",
+        title: "Social Media Management",
+        desc: "Content calendars, community, and social growth across the channels that matter.",
+        tags: ["Social", "Community", "Content"],
+        icon: (
+          <>
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+          </>
+        ),
+      },
+      {
+        code: "MKT-04",
+        title: "Marketing Analytics & CRO",
+        desc: "Attribution, dashboards, and conversion-rate optimization that compound results.",
+        tags: ["Attribution", "CRO", "Dashboards"],
+        icon: (
+          <>
+            <path d="M21 15.5A9 9 0 1 1 8.5 3" />
+            <path d="M21.2 8A9 9 0 0 0 16 2.8V8Z" />
+          </>
+        ),
+      },
+    ],
+  },
+];
 
 // Reusable brand logo mark (Ebkan Tech logo image)
 function LogoMark() {
@@ -19,6 +351,7 @@ export default function App() {
   const [theme, setTheme] = useState(null); // null = follow system
   const [menuOpen, setMenuOpen] = useState(false);
   const [note, setNote] = useState({ text: DEFAULT_NOTE, color: undefined });
+  const [activeScope, setActiveScope] = useState(0); // selected business category
   const canvasRef = useRef(null);
 
   // Apply the chosen theme to <html data-theme="…"> (mirrors the old toggle)
@@ -122,13 +455,10 @@ export default function App() {
     };
   }, []);
 
-  // Contact form -> POST to /api/contact, which emails sales@ebkantech.com
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = async (e) => {
+  // Contact form -> compose email (no data sent automatically)
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
+    const data = new FormData(e.currentTarget);
     const name = (data.get("name") || "").trim();
     const email = (data.get("email") || "").trim();
     const company = (data.get("company") || "").trim();
@@ -142,30 +472,15 @@ export default function App() {
       });
       return;
     }
-
-    setSending(true);
-    setNote({ text: "Sending your enquiry…", color: "var(--muted)" });
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, company, service, message }),
-      });
-      if (!res.ok) throw new Error("Request failed");
-      setNote({
-        text: "Thanks — your enquiry has been sent. We usually reply within one business day.",
-        color: "var(--teal)",
-      });
-      form.reset();
-    } catch (err) {
-      setNote({
-        text: "Something went wrong sending that — please email sales@ebkantech.com directly.",
-        color: "var(--accent)",
-      });
-    } finally {
-      setSending(false);
-    }
+    const subject = `Enquiry: ${service} — ${name}${company ? ` (${company})` : ""}`;
+    const body = `Name: ${name}\nCompany: ${company}\nEmail: ${email}\nService: ${service}\n\n${message}\n`;
+    window.location.href = `mailto:sales@ebkantech.com?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+    setNote({
+      text: "Your email app should now open with the message ready to send.",
+      color: "var(--teal)",
+    });
   };
 
   const h2Compact = {
@@ -209,6 +524,10 @@ export default function App() {
 
               <a href="#delivered" onClick={() => setMenuOpen(false)}>
                 Delivered
+              </a>
+
+              <a href="#demos" onClick={() => setMenuOpen(false)}>
+                Live demos
               </a>
 
               <a href="#about" onClick={() => setMenuOpen(false)}>
@@ -292,8 +611,6 @@ export default function App() {
           </div>
         </section>
 
-        <TrustedBy />
-
         {/* SCOPE / SERVICES */}
         <section className="scope" id="scope">
           <div className="wrap">
@@ -311,7 +628,68 @@ export default function App() {
                 applied AI, and growth marketing.
               </p>
             </div>
-            <ScopeCards />
+            <div
+              className="cat-tabs"
+              role="tablist"
+              aria-label="Business categories"
+            >
+              {SCOPE.map((group, i) => (
+                <button
+                  type="button"
+                  key={group.cat}
+                  className={
+                    "cat-tab" + (i === activeScope ? " is-active" : "")
+                  }
+                  onClick={() => setActiveScope(i)}
+                  role="tab"
+                  aria-selected={i === activeScope}
+                >
+                  <svg
+                    className="cat-tab-ic"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    {group.icon}
+                  </svg>
+                  <span className="cat-tab-name">{group.cat}</span>
+                  <span className="cat-tab-sub">{group.sub}</span>
+                  <span className="cat-tab-meta">
+                    {group.items.length}{" "}
+                    {group.items.length === 1 ? "service" : "services"} →
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="cap-grid" role="tabpanel">
+              {SCOPE[activeScope].items.map((it) => (
+                <article className="cap" key={it.code}>
+                  {it.badge && <span className="badge">{it.badge}</span>}
+                  <svg
+                    className="ic"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  >
+                    {it.icon}
+                  </svg>
+                  <div className="code">{it.code}</div>
+                  <h3>{it.title}</h3>
+                  <p>{it.desc}</p>
+                  <ul>
+                    {it.tags.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -323,14 +701,81 @@ export default function App() {
             <div className="sec-head">
               <div>
                 <span className="eyebrow">Delivered work</span>
-                <h2>Six platforms, shipped and running.</h2>
+                <h2>Two industry ERPs, shipped and running.</h2>
               </div>
               <p>
-                Purpose-built systems — not generic templates — spanning ERP,
-                CRM, BI, AI, and e-commerce.
+                Purpose-built platforms — not generic templates — for two
+                demanding, project-driven verticals.
               </p>
             </div>
-            <DeliveredCards />
+            <div className="case-grid">
+              <div className="case">
+                <span className="tag">Solar EPC · ERP</span>
+                <h4>Solar EPC ERP</h4>
+                <p>
+                  A single system for solar engineering, procurement and
+                  construction: project costing, material procurement, on-site
+                  progress tracking, and commissioning — connecting the finance
+                  team, the warehouse, and the field.
+                </p>
+                <div className="facts">
+                  <div className="f">
+                    <div className="fn">Project</div>
+                    <div className="fl">Costing &amp; budgets</div>
+                  </div>
+                  <div className="f">
+                    <div className="fn">Procure</div>
+                    <div className="fl">Vendor &amp; material</div>
+                  </div>
+                  <div className="f">
+                    <div className="fn">Site</div>
+                    <div className="fl">Progress &amp; commissioning</div>
+                  </div>
+                </div>
+              </div>
+              <div className="case">
+                <span className="tag">Construction · ERP</span>
+                <h4>Construction ERP</h4>
+                <p>
+                  An ERP shaped around how construction firms actually operate:
+                  BOQ and estimation, subcontractor management, inventory and
+                  stores, progress billing, and live budget-vs-actual across
+                  every project.
+                </p>
+                <div className="facts">
+                  <div className="f">
+                    <div className="fn">BOQ</div>
+                    <div className="fl">Estimation</div>
+                  </div>
+                  <div className="f">
+                    <div className="fn">Billing</div>
+                    <div className="fl">Progress &amp; RA bills</div>
+                  </div>
+                  <div className="f">
+                    <div className="fn">Stores</div>
+                    <div className="fl">Inventory &amp; subcon</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* LIVE PRODUCT DEMOS */}
+        <section className="demos" id="demos">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <span className="eyebrow">In build right now</span>
+                <h2>Open a project, walk through its modules.</h2>
+              </div>
+              <p>
+                Five platforms currently in build across five industries — each
+                opens into the actual modules, filled with sample data, so you
+                can click through the same screens your team would use.
+              </p>
+            </div>
+            <ProductDemos />
           </div>
         </section>
 
@@ -453,21 +898,29 @@ export default function App() {
 
         {/* INDUSTRIES + ENGAGEMENT MODELS */}
         <section id="industries">
-          <div className="wrap">
-            <div style={{ marginBottom: "48px" }}>
+          <div className="wrap two">
+            <div>
               <span className="eyebrow">Where we work</span>
               <h2 style={h2Compact}>Industries we serve</h2>
               <p
                 style={{
                   color: "var(--muted)",
-                  maxWidth: "52ch",
-                  margin: "0 0 28px",
+                  maxWidth: "44ch",
+                  margin: "0 0 22px",
                 }}
               >
                 Domain context shortens every project. These are the sectors our
                 data and ERP work lives in.
               </p>
-              <IndustryCards />
+              <div className="ind-list">
+                <span>Supply Chain &amp; Logistics</span>
+                <span>Healthcare &amp; Hospitals</span>
+                <span>E-commerce &amp; Retail</span>
+                <span>Warehousing</span>
+                <span>Solar &amp; Renewable Energy</span>
+                <span>Construction &amp; Infrastructure</span>
+                <span>Manufacturing</span>
+              </div>
             </div>
             <div>
               <span className="eyebrow">Engagement models</span>
@@ -518,7 +971,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* ABOUT */}
+        {/* ABOUT + TEAM */}
         <section id="about">
           <div className="wrap">
             <div className="about-in">
@@ -571,67 +1024,6 @@ export default function App() {
                     We stay on to retrain models and evolve platforms as your
                     business grows.
                   </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* TESTIMONIALS */}
-        <section className="quotes">
-          <div className="wrap">
-            <div className="sec-head">
-              <div>
-                <span className="eyebrow">Client voices</span>
-                <h2>What partners say about working with us.</h2>
-              </div>
-              <p>
-                A few words from the teams we&apos;ve built data and ERP
-                solutions for.
-              </p>
-            </div>
-            <div className="q-grid">
-              <div className="quote">
-                <div className="qm">“</div>
-                <p>
-                  The demand forecasting models cut our stockouts noticeably and
-                  gave planning a number they could trust every week.
-                </p>
-                <div className="who">
-                  <span className="dot">SC</span>
-                  <div>
-                    <div className="wn">Client Name</div>
-                    <div className="wr">Head of Supply Chain</div>
-                  </div>
-                </div>
-              </div>
-              <div className="quote">
-                <div className="qm">“</div>
-                <p>
-                  Their Solar EPC ERP finally connected our procurement, finance
-                  and site teams in one place. Project visibility is completely
-                  different now.
-                </p>
-                <div className="who">
-                  <span className="dot">SE</span>
-                  <div>
-                    <div className="wn">Client Name</div>
-                    <div className="wr">Director, Solar EPC</div>
-                  </div>
-                </div>
-              </div>
-              <div className="quote">
-                <div className="qm">“</div>
-                <p>
-                  The churn model flags at-risk customers early enough for us to
-                  act. It&apos;s become part of how the sales team works.
-                </p>
-                <div className="who">
-                  <span className="dot">EC</span>
-                  <div>
-                    <div className="wn">Client Name</div>
-                    <div className="wr">E-commerce Growth Lead</div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -749,8 +1141,8 @@ export default function App() {
                     placeholder="A short description of your data, systems, or the outcome you're after."
                   />
                 </div>
-                <button className="btn submit" type="submit" disabled={sending}>
-                  {sending ? "Sending…" : "Send enquiry"}
+                <button className="btn submit" type="submit">
+                  Send enquiry
                 </button>
                 <p className="form-note" style={{ color: note.color }}>
                   {note.text}
@@ -787,6 +1179,7 @@ export default function App() {
               <h6>Company</h6>
               <a href="#about">About us</a>
               <a href="#process">How we work</a>
+              <a href="#demos">Live demos</a>
               <a href="#industries">Industries</a>
               <a href="#contact">Contact</a>
             </div>

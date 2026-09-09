@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import BusinessIntelligenceSection from "./components/BusinessIntelligenceSection";
 import ProductDemos from "./components/ProductDemos";
+import { trackEvent } from "./analytics";
 
 
 const DEFAULT_NOTE =
@@ -474,6 +475,10 @@ export default function App() {
     }
     const subject = `Enquiry: ${service} — ${name}${company ? ` (${company})` : ""}`;
     const body = `Name: ${name}\nCompany: ${company}\nEmail: ${email}\nService: ${service}\n\n${message}\n`;
+    trackEvent("generate_lead", {
+      service_of_interest: service,
+      has_company: Boolean(company),
+    });
     window.location.href = `mailto:sales@ebkantech.com?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;

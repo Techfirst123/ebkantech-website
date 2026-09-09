@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { motion } from "framer-motion";
+import { trackEvent } from "../analytics";
 
 /**
  * Live product demos — five projects currently in build. Each one opens
@@ -244,12 +245,23 @@ function DemoCard({ project, isOpen, onToggle }) {
   const panelId = useId();
   const a = project.accentDark;
 
+  const handleToggle = () => {
+    if (!isOpen) {
+      trackEvent("select_content", {
+        content_type: "product_demo_open",
+        item_id: project.id,
+        item_name: project.name,
+      });
+    }
+    onToggle(project.id);
+  };
+
   return (
     <div className="demo-card" style={{ "--p-accent": project.accent }}>
       <button
         type="button"
         className="demo-head"
-        onClick={() => onToggle(project.id)}
+        onClick={handleToggle}
         aria-expanded={isOpen}
         aria-controls={panelId}
       >
@@ -304,7 +316,17 @@ function DemoCard({ project, isOpen, onToggle }) {
             </div>
           </div>
 
-          <a href="#contact" className="demo-cta">
+          <a
+            href="#contact"
+            className="demo-cta"
+            onClick={() =>
+              trackEvent("select_content", {
+                content_type: "product_demo_enquiry",
+                item_id: project.id,
+                item_name: project.name,
+              })
+            }
+          >
             Enquire about this module
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M13 6l6 6-6 6" />

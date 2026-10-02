@@ -7,6 +7,7 @@ import HeroRotator from "./components/HeroRotator";
 import Milestones from "./components/Milestones";
 import ProductScroller from "./components/ProductScroller";
 import FlipCards from "./components/FlipCards";
+import TechStack from "./components/TechStack";
 
 
 const DEFAULT_NOTE =
@@ -254,17 +255,17 @@ export default function App() {
                     DATA SCIENCE · <b>ERP</b> · CRM
                   </span>
                   <span className="chip mono">
-                    Delivered: Solar EPC &amp; Construction ERP
+                    Building: ERP Saurya 2x · ERP Niraman 2x
                   </span>
                 </div>
                 <h1>
                   We turn your business data into <HeroRotator />
                 </h1>
                 <p className="lede">
-                  Ebkan Tech Pvt Ltd builds data science solutions and industry
-                  ERP/CRM systems — forecasting supply chains, cutting churn,
-                  streamlining warehouses and hospitals, and running purpose-built
-                  ERPs for solar EPC and construction.
+                  Ebkan Tech Pvt Ltd builds data science solutions — forecasting
+                  supply chains, cutting churn, streamlining warehouses and
+                  hospitals — and is building its own ERP and CRM products for
+                  power, solar, infrastructure, rental and sales.
                 </p>
                 <div className="hero-cta">
                   <a href="#contact" className="btn">
@@ -370,62 +371,22 @@ export default function App() {
           </div>
         </section>
 
-        {/* STACK */}
-        <section className="stack" id="stack">
+        {/* TECHNOLOGY — Bootstrap 5 grid + GSAP (components/TechStack.jsx) */}
+        <section className="tech" id="stack">
           <div className="wrap">
             <div className="sec-head">
               <div>
                 <span className="eyebrow">Technology</span>
-                <h2>The tools behind the work.</h2>
+                <h2>
+                  The tools behind <span className="hl">the work</span>.
+                </h2>
               </div>
               <p>
-                Proven data science, BI, and platform tooling — chosen for
-                accuracy, scale, and maintainability.
+                What we build with today, and the ERP and CRM products we&apos;re
+                building for power, solar, infrastructure, rental and sales.
               </p>
             </div>
-            <div className="stack-cols">
-              <div>
-                <h5>Data Science &amp; ML</h5>
-                <ul>
-                  <li>Python</li>
-                  <li>pandas / NumPy</li>
-                  <li>scikit-learn</li>
-                  <li>XGBoost</li>
-                  <li>TensorFlow / PyTorch</li>
-                  <li>Prophet</li>
-                </ul>
-              </div>
-              <div>
-                <h5>Analytics &amp; BI</h5>
-                <ul>
-                  <li>Power BI</li>
-                  <li>Tableau</li>
-                  <li>SQL</li>
-                  <li>Snowflake</li>
-                  <li>Apache Airflow</li>
-                </ul>
-              </div>
-              <div>
-                <h5>ERP &amp; CRM</h5>
-                <ul>
-                  <li>ERPNext / Frappe</li>
-                  <li>Odoo</li>
-                  <li>Custom ERP</li>
-                  <li>Zoho CRM</li>
-                  <li>Salesforce</li>
-                </ul>
-              </div>
-              <div>
-                <h5>Platform &amp; Cloud</h5>
-                <ul>
-                  <li>AWS / Azure</li>
-                  <li>PostgreSQL</li>
-                  <li>FastAPI</li>
-                  <li>Docker</li>
-                  <li>REST APIs</li>
-                </ul>
-              </div>
-            </div>
+            <TechStack />
           </div>
         </section>
 

@@ -100,7 +100,7 @@ export const SCOPE = [
     cat: "ERP",
     slug: "erp",
     accent: "#C97A1F",
-    sub: "ERP platforms shaped to how your operations actually run.",
+    sub: "Our own ERP products for power, solar and infrastructure projects.",
     icon: (
       <>
         <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -112,10 +112,10 @@ export const SCOPE = [
     items: [
       {
         code: "ERP-01",
-        title: "Solar EPC ERP",
-        desc: "End-to-end ERP for solar EPC — project costing, procurement, site progress, and commissioning.",
-        tags: ["Costing", "Procurement", "Site progress", "Commissioning"],
-        badge: "Delivered",
+        title: "ERP Saurya 2x",
+        desc: "Our ERP for power and solar projects.",
+        tags: ["Power", "Solar"],
+        badge: "In development",
         icon: (
           <>
             <circle cx="12" cy="12" r="4" />
@@ -125,10 +125,10 @@ export const SCOPE = [
       },
       {
         code: "ERP-02",
-        title: "Construction ERP",
-        desc: "Construction ERP covering budgets, BOQ, subcontractors, inventory, and progress billing.",
-        tags: ["BOQ", "Subcontractors", "Inventory", "Progress billing"],
-        badge: "Delivered",
+        title: "ERP Niraman 2x",
+        desc: "Our ERP for infrastructure projects.",
+        tags: ["Infrastructure", "Projects"],
+        badge: "In development",
         icon: (
           <>
             <path d="M3 21h18M6 21V8l6-4 6 4v13" />
@@ -142,7 +142,7 @@ export const SCOPE = [
     cat: "CRM",
     slug: "crm",
     accent: "#2C6E6A",
-    sub: "Customer platforms tied directly to your sales process.",
+    sub: "Our own CRM products for rental and sales teams.",
     icon: (
       <>
         <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -153,14 +153,27 @@ export const SCOPE = [
     items: [
       {
         code: "CRM-01",
-        title: "CRM Solutions",
-        desc: "Customer relationship platforms — pipeline, lead scoring, and reporting tied to your sales process.",
-        tags: ["Pipeline", "Lead scoring", "Reports"],
+        title: "Vantage 2x",
+        desc: "Our CRM for rental businesses.",
+        tags: ["Rental", "CRM"],
+        badge: "In development",
         icon: (
           <>
-            <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
-            <circle cx="10" cy="7" r="3" />
-            <path d="M21 21v-2a4 4 0 0 0-3-3.87M17 3.13A4 4 0 0 1 17 11" />
+            <path d="M3 10l9-6 9 6v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z" />
+            <path d="M9 21v-6h6v6" />
+          </>
+        ),
+      },
+      {
+        code: "CRM-02",
+        title: "Lead2x",
+        desc: "Our sales CRM.",
+        tags: ["Sales", "Leads"],
+        badge: "In development",
+        icon: (
+          <>
+            <path d="M3 3v18h18" />
+            <path d="M7 15l4-4 3 3 6-7" />
           </>
         ),
       },

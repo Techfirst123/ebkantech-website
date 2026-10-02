@@ -558,3 +558,205 @@ section.psc-section {
     transition: none;
   }
 }
+
+/* ---------- Technology section (components/TechStack.jsx) ----------
+   Layout: Bootstrap grid (.bs .row.g-4.row-cols-1.row-cols-md-2.row-cols-xl-4).
+   Each card gets its own accent; "Our ERP & CRM" is the highlighted card. */
+section.tech {
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 0) 0 0 / 22px 22px,
+    linear-gradient(180deg, var(--paper-2), var(--paper));
+}
+.tk .col:nth-child(1) { --tk: #0a6cff; }
+.tk .col:nth-child(2) { --tk: #7c5cff; }
+.tk .col:nth-child(3) { --tk: #0a6cff; }
+.tk .col:nth-child(4) { --tk: #0e9f97; }
+
+.tk-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  padding: 22px 20px 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+/* accent edge along the top */
+.tk-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--tk), color-mix(in srgb, var(--tk) 40%, #fff));
+}
+.tk-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--tk) 45%, var(--line));
+  box-shadow: 0 26px 50px -28px color-mix(in srgb, var(--tk) 70%, transparent);
+}
+.tk-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tk-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tk) 13%, var(--card));
+  color: var(--tk);
+}
+.tk-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.tk-title {
+  margin: 0;
+  font-size: 1.04rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+.tk-count {
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+.tk-note {
+  margin: -4px 0 0;
+  padding: 7px 10px;
+  border: 1px dashed color-mix(in srgb, var(--tk) 45%, var(--line));
+  border-radius: 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+/* tool chips with a coloured letter */
+.tk-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tk-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px 5px 5px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--paper);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.tk-chip:hover {
+  border-color: var(--tk);
+  background: color-mix(in srgb, var(--tk) 8%, var(--card));
+}
+.tk-mono {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--tk);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+/* highlighted card: our own ERP & CRM products */
+.tk-card.is-featured {
+  border-color: transparent;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(255, 255, 255, 0.18), transparent 55%),
+    linear-gradient(150deg, #0a6cff, #3d8bff 55%, #0e9f97);
+  color: #fff;
+}
+.tk-card.is-featured::before {
+  display: none;
+}
+.tk-card.is-featured .tk-icon {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+.tk-card.is-featured .tk-count {
+  color: rgba(255, 255, 255, 0.75);
+}
+.tk-prods {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tk-prod {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.tk-prod-name {
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+.tk-prod-for {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+.tk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: auto 0 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+.tk-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffd166;
+  box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.25);
+  animation: tk-pulse 1.8s ease-in-out infinite;
+}
+@keyframes tk-pulse {
+  50% {
+    box-shadow: 0 0 0 7px rgba(255, 209, 102, 0.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tk-card,
+  .tk-chip {
+    transition: none;
+  }
+  .tk-status-dot {
+    animation: none;
+  }
+}

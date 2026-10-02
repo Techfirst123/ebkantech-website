@@ -43,14 +43,9 @@ export default function ProductPage() {
   const { id } = useParams();
   const product = PRODUCTS.find((p) => p.id === id);
 
+  // <head> (title, description, canonical, structured data) is set by useSeo
   useEffect(() => {
-    if (!product) return;
-    const prev = document.title;
-    document.title = `${product.name} — Product demo | Ebkan Tech`;
-    window.scrollTo(0, 0);
-    return () => {
-      document.title = prev;
-    };
+    if (product) window.scrollTo(0, 0);
   }, [product]);
 
   if (!product) return <NotFound />;

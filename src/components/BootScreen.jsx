@@ -26,7 +26,8 @@ const FADE_MS = 450;
 
 export default function BootScreen() {
   const reduce = reducedMotion();
-  const [done, setDone] = useState(reduce ? LINES.length : 0); // lines completed
+  // starts at 0 on the server and in the browser so hydration matches
+  const [done, setDone] = useState(0); // lines completed
   const [leaving, setLeaving] = useState(false);
   const [gone, setGone] = useState(false);
   const timers = useRef([]);
@@ -54,6 +55,7 @@ export default function BootScreen() {
     html.style.overflow = "hidden";
 
     if (reduce) {
+      setDone(LINES.length);
       timers.current.push(setTimeout(finish, 700));
     } else {
       LINES.forEach((_, i) => {

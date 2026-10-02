@@ -1,11 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./App.jsx";
-import CategoryPage from "./pages/CategoryPage.jsx";
-import ProductPage from "./pages/ProductPage.jsx";
-import FloatingContact from "./components/FloatingContact.jsx";
-import BootScreen from "./components/BootScreen.jsx";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./AppRoutes.jsx";
 import "./vendor/bootstrap-grid.scoped.css";
 import "./ebkan.css";
 import "./showcase.css";
@@ -14,21 +10,20 @@ import "./category.css";
 import "./vibrant.css";
 import "./boot.css";
 
-// "/" is the full home page; each Scope-of-business category has its own
-// page at /services/<slug>, and each product at /products/<id>. vercel.json already rewrites every path to the
-// app, so these URLs also work on a hard refresh in production.
-ReactDOM.createRoot(document.getElementById("root")).render(
+const container = document.getElementById("root");
+const tree = (
   <React.StrictMode>
     <BrowserRouter>
-      {/* terminal-style loading screen on every fresh page load */}
-      <BootScreen />
-      <Routes>
-        <Route path="/services/:slug" element={<CategoryPage />} />
-        <Route path="/products/:id" element={<ProductPage />} />
-        <Route path="*" element={<App />} />
-      </Routes>
-      {/* "Get in touch" tab + WhatsApp button, on every page */}
-      <FloatingContact />
+      <AppRoutes />
     </BrowserRouter>
   </React.StrictMode>
 );
+
+// Pages are prerendered at build time (scripts/prerender.mjs), so in
+// production the HTML is already there: hydrate it instead of rebuilding.
+// In `npm run dev` the root is empty, so render normally.
+if (container.hasChildNodes()) {
+  ReactDOM.hydrateRoot(container, tree);
+} else {
+  ReactDOM.createRoot(container).render(tree);
+}

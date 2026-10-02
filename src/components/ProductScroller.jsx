@@ -49,11 +49,10 @@ function Item({ product, isActive }) {
 export default function ProductScroller() {
   const products = featuredFirst(PRODUCTS);
   const [active, setActive] = useState(0);
-  // Only decides which item is "active"/reachable — the layout itself comes
-  // from the same media query in CSS, so it's correct before GSAP measures.
-  const [pinned, setPinned] = useState(
-    () => typeof window !== "undefined" && window.matchMedia(DESKTOP).matches,
-  );
+  // Only decides which item is "active"/reachable (layout comes from CSS).
+  // Starts false so the prerendered HTML and the browser's first render
+  // match; the desktop effect below switches it on immediately.
+  const [pinned, setPinned] = useState(false);
   const stageRef = useRef(null);
   const colA = useRef(null);
   const colB = useRef(null);

@@ -34,14 +34,9 @@ export default function CategoryPage() {
   const { slug } = useParams();
   const cat = getCategory(slug);
 
+  // <head> (title, description, canonical, structured data) is set by useSeo
   useEffect(() => {
-    if (!cat) return;
-    const prev = document.title;
-    document.title = `${cat.cat} — Services & Demos | Ebkan Tech`;
-    window.scrollTo(0, 0);
-    return () => {
-      document.title = prev;
-    };
+    if (cat) window.scrollTo(0, 0);
   }, [cat]);
 
   if (!cat) return <NotFound />;

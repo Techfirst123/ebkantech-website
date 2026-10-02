@@ -1,0 +1,654 @@
+/* =====================================================================
+   PRODUCT SHOWCASE — cards, screenshot carousel, category demo strip,
+   /projects page.
+
+   Import AFTER ebkan.css (see main.jsx). Uses only the tokens already
+   defined there — --card, --line, --paper, --accent, --teal, --meta,
+   --muted, --text, --shadow, --mono, --surface-* — so light/dark and the
+   data-theme toggle work with no extra rules. --p-accent is set per
+   product by the components.
+
+   Class prefixes:  pc- card · pm- media/carousel · cd- category demos
+                    pj- /projects page · pp-proof / pp-gallery product page
+   ===================================================================== */
+
+/* Dark surface used by the card posters. Fixed (not theme-reactive) on
+   purpose: posters read as embedded product UI in light and dark mode. */
+:root {
+  --surface-bg: #0a0f16;
+  --surface-line: rgba(255, 255, 255, 0.09);
+  --surface-text: #e9edf2;
+  --surface-muted: #93a0ae;
+}
+
+/* ---------- CARD GRID ---------- */
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+@media (max-width: 980px) {
+  .pc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .pc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- CARD ---------- */
+.pc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.pc:hover {
+  border-color: color-mix(in srgb, var(--p-accent, var(--accent)) 60%, var(--line));
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.pc-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--surface-bg);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.pc-star {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--accent);
+  color: #0d1826;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* ---------- MEDIA: CAROUSEL ---------- */
+.pm {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.pm:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.pm-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pm-img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center; /* dashboards read best from the top-left */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.pm-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(10, 15, 22, 0.72);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  backdrop-filter: blur(6px);
+  transition:
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+.pm-nav svg {
+  width: 16px;
+  height: 16px;
+}
+.pm-prev {
+  left: 10px;
+}
+.pm-next {
+  right: 10px;
+}
+.pm:hover .pm-nav,
+.pm:focus-within .pm-nav {
+  opacity: 1;
+}
+.pm-nav:hover {
+  background: rgba(10, 15, 22, 0.92);
+}
+@media (hover: none) {
+  .pm-nav {
+    opacity: 1; /* no hover on touch screens — always show the arrows */
+  }
+}
+.pm-nav:focus-visible,
+.pm-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pm-dots {
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 99px;
+  background: rgba(10, 15, 22, 0.6);
+  backdrop-filter: blur(6px);
+}
+.pm-dot {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.pm-dot::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+.pm-dot.is-on::before {
+  background: #fff;
+  transform: scale(1.35);
+}
+@media (pointer: coarse) {
+  .pm-dot {
+    width: 24px;
+    height: 24px;
+  }
+  .pm-dot::before {
+    inset: 9px;
+  }
+}
+.pm-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- MEDIA: POSTER (no screenshots yet) ---------- */
+.pm-poster {
+  --pa: #6fa8d6;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 46px 16px 14px;
+  color: var(--surface-text);
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--pa) 26%, transparent), transparent 62%),
+    linear-gradient(var(--surface-line) 1px, transparent 1px) 0 0 / 100% 28px,
+    linear-gradient(90deg, var(--surface-line) 1px, transparent 1px) 0 0 / 28px 100%,
+    var(--surface-bg);
+}
+.pm-poster-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 3px 9px;
+  border: 1px solid var(--surface-line);
+  border-radius: 99px;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--surface-muted);
+}
+.pm-poster-kpis {
+  display: flex;
+  gap: 18px;
+}
+.pm-kpi {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+.pm-kpi-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.pm-kpi-lbl {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: var(--surface-muted);
+}
+.pm-chart {
+  display: block;
+  width: 72%;
+  max-width: 300px;
+  aspect-ratio: 240 / 64;
+}
+.pm-chart rect,
+.pm-chart polygon,
+.pm-chart circle {
+  fill: var(--pa);
+}
+.pm-chart polyline {
+  stroke: var(--pa);
+  fill: none;
+}
+
+/* ---------- CARD BODY ---------- */
+.pc-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+}
+/* two deliberate lines on every card (category, then industry) — letting them
+   share a line made the wrap point differ card to card */
+.pc-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  margin: 0;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+.pc-cat {
+  font-weight: 700;
+  color: var(--text);
+}
+.pc-cat::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--p-accent, var(--accent));
+}
+.pc-title {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.pc-title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pc-blurb {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.pc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pc-tags li {
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.pc-tags .pc-more {
+  border-style: dashed;
+}
+
+.pc-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+/* the "what will I see" chip — encodes live vs sample in form, not just words */
+.pc-proof {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pc-proof-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+.pc-proof.is-live {
+  color: var(--text);
+}
+.pc-proof.is-live .pc-proof-dot {
+  background: var(--teal);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 24%, transparent);
+}
+.pc-proof.is-preview .pc-proof-dot {
+  border: 1.5px solid var(--meta); /* hollow = not a running instance */
+}
+
+.pc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pc-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  font-size: 0.84rem;
+}
+.pc-actions .btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+.pc-actions .btn:hover svg {
+  transform: translateX(2px);
+}
+/* ebkan.css has `:root[data-theme="light"] .btn` / `[data-theme="dark"] .btn`
+   (specificity 0,3,0), which outranks `.btn.ghost` (0,2,0): once a visitor
+   uses the theme toggle, every ghost button turns solid. Re-assert the ghost
+   look for the buttons this file adds. (Root fix, if you want it: add
+   `:not(.ghost)` to those two rules in ebkan.css.) */
+.pc-actions .btn.ghost,
+.demos-more .btn.ghost,
+.cd-empty .btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--line);
+}
+.pc-note {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--meta);
+}
+
+@media (max-width: 640px) {
+  .pc-body {
+    padding: 16px;
+  }
+  .pc-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
+/* ---------- CATEGORY DEMO STRIP (under the Scope tabs) ---------- */
+.cd {
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.cd-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.cd-title {
+  margin: 0.3em 0 0;
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  font-weight: 780;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.cd-all {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  white-space: nowrap;
+}
+.cd-all:hover {
+  border-color: var(--accent);
+}
+.cd-sub {
+  max-width: 68ch;
+  margin: 0 0 24px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.cd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--card);
+}
+.cd-empty p {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--muted);
+}
+.cd-empty .btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+}
+
+/* ---------- HOME: "browse all" row ---------- */
+.demos-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+.demos-more .btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 20px;
+}
+
+/* ---------- /projects PAGE ---------- */
+.pj-head {
+  max-width: 760px;
+  padding-bottom: 26px;
+  border-bottom: 0;
+}
+/* ebkan.css caps every h1 at 16ch (built for the hero); this page's headline
+   reads better on two lines than three */
+.pj-head .pp-title {
+  max-width: 22ch;
+}
+.pj-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--card);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.pj-count-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+.pj-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 14px;
+}
+.pj-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--card);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  transition: border-color 0.2s ease;
+}
+.pj-filter b {
+  font-weight: 700;
+  color: var(--text);
+}
+.pj-filter:hover {
+  border-color: var(--muted);
+}
+.pj-filter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.pj-filter.is-active {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, var(--card));
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+.pj-status {
+  margin: 0 0 20px;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--meta);
+}
+
+/* ---------- PRODUCT PAGE additions ---------- */
+.pp-proof-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+.pp-proof-note {
+  font-size: 0.7rem;
+  color: var(--meta);
+}
+.pp-actions {
+  margin-top: 16px;
+}
+/* beats `.pp-head .demo-cta { margin-top: 28px }` so the row doesn't double up */
+.pp-head .pp-actions .demo-cta {
+  margin-top: 0;
+}
+.pp-gallery {
+  position: relative;
+  max-width: 980px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-bg);
+}
+
+/* ---------- MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .pm-track,
+  .pm-nav,
+  .pm-dot::before,
+  .pc,
+  .pc-actions .btn svg {
+    transition: none !important;
+  }
+  .pc:hover {
+    transform: none;
+  }
+}
+
+/* "Walk through the modules" heading between the cards and the accordion */
+.demos-sub {
+  margin: 56px 0 18px;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 780;
+  letter-spacing: -0.02em;
+}
+
+/* poster heading when a product has no KPI module (names its chart) */
+.pm-poster-title {
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #fff;
+}

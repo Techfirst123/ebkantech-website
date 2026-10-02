@@ -1,0 +1,46 @@
+# Ebkan Tech — website (React + Vite)
+
+The Ebkan Tech Pvt Ltd landing page, converted from the standalone HTML design into a
+Vite + React app.
+
+## Run it
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the URL Vite prints (usually http://localhost:5173).
+
+## Build for production
+
+```bash
+npm run build      # outputs static files to dist/
+npm run preview    # preview the production build locally
+```
+
+Deploy the contents of `dist/` to any static host (Netlify, Vercel, GitHub Pages, S3, Nginx…).
+
+## Where things live
+
+| File | What it is |
+|------|-----------|
+| `src/App.jsx` | The whole page as one React component. The three original `<script>` blocks are now hooks: theme toggle (`toggleTheme`), hero canvas animation (`useEffect`), and the contact form (`handleSubmit`). |
+| `src/ebkan.css` | All styles — design tokens, light/dark themes, and every section. Unchanged from the original design. |
+| `src/main.jsx` | React entry point; mounts `<App />` and imports the CSS. |
+| `index.html` | Vite HTML shell with `<div id="root">`. |
+
+## Notes
+
+- **Contact form:** on submit it opens the visitor's email app pre-filled to `sales@ebkantech.com`
+  (no backend, nothing sent automatically). To collect submissions server-side, replace the body of
+  `handleSubmit` in `src/App.jsx` with a `fetch("/api/contact", { method: "POST", ... })` call to a
+  backend or a form service (Formspree, Resend, etc.).
+- **Placeholders to replace:** team names/roles and the testimonial quotes + client names in
+  `src/App.jsx` are stand-ins.
+
+## Using it inside an existing React app instead
+
+Copy `src/App.jsx` (rename to e.g. `EbkanSite.jsx`) and `src/ebkan.css` into your project, then
+render `<EbkanSite />` from a route. For **Next.js (App Router)**, add `"use client";` as the first
+line of the component file — it uses `useState`/`useEffect` and the browser canvas API.

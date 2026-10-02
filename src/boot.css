@@ -1,0 +1,255 @@
+/* =====================================================================
+   BOOT / LOADING SCREEN (components/BootScreen.jsx)
+   Always dark — it reads as a terminal regardless of the site theme.
+   ===================================================================== */
+.boot {
+  --b-bg: #070b10;
+  --b-win: #0d1117;
+  --b-line: rgba(255, 255, 255, 0.07);
+  --b-text: #c9d1d9;
+  --b-dim: #6e7681;
+  --b-teal: #2dd4bf;
+  --b-green: #22c55e;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(60% 60% at 50% 45%, rgba(45, 212, 191, 0.07), transparent 70%),
+    linear-gradient(var(--b-line) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, var(--b-line) 1px, transparent 1px) 0 0 / 40px 40px,
+    var(--b-bg);
+  color: var(--b-text);
+  font-family: var(--mono);
+  cursor: pointer;
+  opacity: 1;
+  transition:
+    opacity 0.45s ease,
+    visibility 0.45s;
+}
+.boot.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+}
+.boot.is-leaving .boot-win {
+  transform: scale(0.97);
+}
+
+.boot-win {
+  width: min(560px, 100%);
+  overflow: hidden;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 14px;
+  background: var(--b-win);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 40px 80px -30px rgba(0, 0, 0, 0.8),
+    0 0 60px -20px rgba(45, 212, 191, 0.18);
+  cursor: default;
+  animation: boot-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition: transform 0.45s ease;
+}
+@keyframes boot-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+.boot-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--b-line);
+  background: #0a0e13;
+}
+.boot-dots {
+  display: flex;
+  gap: 8px;
+}
+.boot-dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f56;
+}
+.boot-dots i:nth-child(2) {
+  background: #f5a524;
+}
+.boot-dots i:nth-child(3) {
+  background: #22c55e;
+}
+.boot-title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--b-dim);
+}
+.boot-ver {
+  padding: 2px 8px;
+  border: 1px solid rgba(45, 212, 191, 0.4);
+  border-radius: 4px;
+  background: rgba(45, 212, 191, 0.08);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--b-teal);
+}
+
+.boot-body {
+  padding: 22px 24px 26px;
+}
+.boot-tag {
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--b-line);
+  font-size: 0.74rem;
+  color: var(--b-teal);
+}
+.boot-tag span {
+  color: var(--b-dim);
+}
+
+.boot-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.boot-lines li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--b-dim);
+  opacity: 0.35;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease;
+}
+.boot-lines li.is-running {
+  opacity: 0.75;
+}
+.boot-lines li.is-done {
+  color: var(--b-text);
+  opacity: 1;
+}
+.boot-prompt {
+  color: var(--b-green);
+}
+.boot-check {
+  margin-left: 4px;
+  color: var(--b-green);
+  animation: boot-pop 0.3s ease both;
+}
+@keyframes boot-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+.boot-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.boot-track {
+  flex: 1;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.boot-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--b-teal), var(--b-green));
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.5);
+  transition: width 0.3s ease;
+}
+.boot-pct {
+  min-width: 3.2em;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--b-teal);
+}
+
+.boot-welcome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 16px;
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 8px;
+  background: rgba(34, 197, 94, 0.06);
+  font-size: 0.92rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+.boot-welcome.is-on {
+  opacity: 1;
+  transform: none;
+}
+.boot-welcome b {
+  color: var(--b-teal);
+}
+.boot-spark {
+  color: var(--b-teal);
+}
+.boot-ok {
+  margin-left: auto;
+  font-size: 1.1rem;
+  color: var(--b-green);
+}
+
+.boot-skip {
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  padding: 6px 12px;
+  border: 1px solid var(--b-line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--b-dim);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  cursor: pointer;
+}
+.boot-skip:hover,
+.boot-skip:focus-visible {
+  color: var(--b-text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 520px) {
+  .boot-body {
+    padding: 18px 16px 20px;
+  }
+  .boot-lines {
+    font-size: 0.8rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boot,
+  .boot-win,
+  .boot-lines li,
+  .boot-fill,
+  .boot-welcome {
+    transition: none;
+    animation: none;
+  }
+}

@@ -19,7 +19,7 @@ const STATUS = {
   "in progress": "warn", pending: "warn", reorder: "warn", open: "warn",
   review: "warn", "expiring soon": "warn", "due soon": "warn", flagged: "warn",
   scheduled: "neutral", "in transit": "neutral", queued: "neutral", draft: "neutral",
-  // SolarERP10x, VantageRental5x, 10x Compliance
+  // Saurya2x, VantageRental5x, 10x Compliance
   collected: "good", cleared: "good", received: "good", preferred: "good", valid: "good",
   "on time": "good",
   bounced: "bad", "docs expired": "bad", "expired · blocked": "bad", "overdue 21 d": "bad",
@@ -322,10 +322,12 @@ export const PROJECTS = [
   },
   {
     // Source: SolarERP10x_Product_Demo_EbkanTech.pdf (all figures are its demo data)
-    id: "solar-erp-10x",
-    accent: "#E08A00",
+    // Shipped as Saurya2x — Solar EPC Cloud. Old id solar-erp-10x is 301'd in vercel.json.
+    id: "saurya-2x",
+    // Saurya2x brand violet, sampled from the product logo
+    accent: "#6860E8",
     industry: "Solar EPC",
-    name: "SolarERP10x",
+    name: "Saurya2x",
     blurb: "Run every site, vendor, panel and milestone from one screen — from tender and yield modelling to field execution, project costing and handover.",
     modules: [
       { name: "Dashboard", type: "kpi", data: [

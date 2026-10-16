@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { PRODUCTS, featuredFirst, hasDemo } from "../data/demoShowcase";
+import { PRODUCTS, featuredFirst, hasDemo, hasVideo } from "../data/demoShowcase";
 import { ModulePreview } from "../components/ProductDemos";
+import VideoModal from "../components/VideoModal";
 import TopBar from "../components/TopBar";
 
 /**
@@ -42,15 +43,20 @@ function NotFound() {
 export default function ProductPage() {
   const { id } = useParams();
   const product = PRODUCTS.find((p) => p.id === id);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   // <head> (title, description, canonical, structured data) is set by useSeo
   useEffect(() => {
     if (product) window.scrollTo(0, 0);
   }, [product]);
 
+  // Never leave the player open when moving to another product.
+  useEffect(() => setVideoOpen(false), [id]);
+
   if (!product) return <NotFound />;
 
   const live = hasDemo(product);
+  const video = hasVideo(product) ? product.video : null;
   const others = featuredFirst(PRODUCTS).filter((p) => p.id !== product.id);
 
   return (
@@ -77,13 +83,24 @@ export default function ProductPage() {
                 <h1 className="cp-title">{product.name}</h1>
                 <p className="cp-sub">{product.blurb}</p>
                 <div className="pp-actions">
+                  {video && (
+                    <button type="button" className="btn pp-play" onClick={() => setVideoOpen(true)}>
+                      <span className="pp-play-ico" aria-hidden="true">
+                        ▶
+                      </span>
+                      Watch demo video
+                      <span className="pp-play-len" aria-hidden="true">
+                        {video.duration}
+                      </span>
+                    </button>
+                  )}
                   {live && (
-                    <a className="btn" href={product.demo} target="_blank" rel="noopener noreferrer">
+                    <a className={"btn" + (video ? " ghost" : "")} href={product.demo} target="_blank" rel="noopener noreferrer">
                       Open live demo ↗
                     </a>
                   )}
                   {product.brochure && (
-                    <a className={"btn" + (live ? " ghost" : "")} href={product.brochure} target="_blank" rel="noopener noreferrer">
+                    <a className={"btn" + (live || video ? " ghost" : "")} href={product.brochure} target="_blank" rel="noopener noreferrer">
                       Product brochure (PDF) ↗
                     </a>
                   )}
@@ -95,6 +112,42 @@ export default function ProductPage() {
             </div>
           </div>
         </section>
+
+        {video && (
+          <section className="cp-section">
+            <div className="wrap">
+              <div className="sec-head">
+                <div>
+                  <span className="eyebrow">Product walkthrough</span>
+                  <h2>
+                    See <span className="hl">{product.name}</span> in motion
+                  </h2>
+                </div>
+                <p>
+                  A {video.duration} walkthrough of the real application — every stage,
+                  end to end. No signup.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                className="pp-videocard"
+                onClick={() => setVideoOpen(true)}
+                aria-label={`Play video: ${video.title}`}
+              >
+                <img className="pp-videocard-img" src={video.poster} alt="" width="1280" height="720" loading="lazy" />
+                <span className="pp-videocard-shade" aria-hidden="true" />
+                <span className="pp-videocard-play" aria-hidden="true">
+                  ▶
+                </span>
+                <span className="pp-videocard-meta">
+                  <span className="pp-videocard-title">{video.title}</span>
+                  <span className="pp-videocard-len mono">{video.duration}</span>
+                </span>
+              </button>
+            </div>
+          </section>
+        )}
 
         <section className="cp-section">
           <div className="wrap">
@@ -147,6 +200,13 @@ export default function ProductPage() {
           </div>
         </section>
       </main>
+
+      <VideoModal
+        open={videoOpen}
+        onClose={() => setVideoOpen(false)}
+        video={video}
+        accent={product.accent}
+      />
     </>
   );
 }

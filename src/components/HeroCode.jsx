@@ -52,12 +52,12 @@ const SNIPPETS = [
     ],
   },
   {
-    // sample project from the SolarERP10x product demo
+    // sample project from the Saurya2x product demo
     file: "solar_risk.py",
     lines: [
-      [["kw", "from"], ["sp", " "], ["name", "ebkan.erp"], ["sp", " "], ["kw", "import"], ["sp", " "], ["name", "SolarERP10x"]],
+      [["kw", "from"], ["sp", " "], ["name", "ebkan.erp"], ["sp", " "], ["kw", "import"], ["sp", " "], ["name", "Saurya2x"]],
       [],
-      [["name", "erp"], ["punc", " = "], ["fn", "SolarERP10x"], ["punc", "("], ["param", "site"], ["punc", "="], ["str", '"Kadapa 2.4 MW"'], ["punc", ")"]],
+      [["name", "erp"], ["punc", " = "], ["fn", "Saurya2x"], ["punc", "("], ["param", "site"], ["punc", "="], ["str", '"Kadapa 2.4 MW"'], ["punc", ")"]],
       [["name", "risk"], ["punc", " = "], ["name", "erp"], ["punc", "."], ["fn", "slip_risk"], ["punc", "()"]],
       [],
       [["kw", "if"], ["sp", " "], ["name", "risk"], ["punc", "."], ["name", "score"], ["punc", " > "], ["num", "80"], ["punc", ":"]],

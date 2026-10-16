@@ -33,13 +33,24 @@ export const SHOWCASE = {
     demo: "",
     screens: [],
   },
-  "solar-erp-10x": {
+  "saurya-2x": {
     category: "ERP",
     categories: ["ERP", "AI", "Data Science"], // AI co-pilot, risk prediction, BI
     featured: true,
     demo: "",
-    brochure: "/demos/solar-erp-10x/brochure.pdf",
+    brochure: "/demos/saurya-2x/brochure.pdf",
     screens: [],
+    video: {
+      src: "/demos/saurya-2x/saurya-2x-walkthrough.mp4",
+      poster: "/demos/saurya-2x/poster.jpg",
+      title: "Saurya2x — Solar EPC Cloud: application walkthrough",
+      // shown on the button/card, and emitted as ISO-8601 in the VideoObject
+      duration: "12:30",
+      isoDuration: "PT12M30S",
+      uploadDate: "2026-10-16",
+      description:
+        "A full walkthrough of Saurya2x, the Solar EPC Cloud: design, procurement, field execution, QA, finance and handover in one platform, with compliance gating built in.",
+    },
   },
   "vantage-rental-5x": {
     category: "ERP",
@@ -62,6 +73,9 @@ export const SHOWCASE = {
 /** Only same-site paths or http(s) URLs count as a real demo. */
 export const hasDemo = (p) => /^(\/|https?:\/\/)/i.test(p.demo || "");
 
+/** True once a product has a walkthrough video file wired up. */
+export const hasVideo = (p) => /^(\/|https?:\/\/)/i.test(p.video?.src || "");
+
 /**
  * Card-ready products: the PROJECTS records plus their showcase fields, with
  * poster numbers taken from each product's own KPI and chart modules.
@@ -77,6 +91,7 @@ export const PRODUCTS = PROJECTS.map((p) => {
     featured: !!extra.featured,
     demo: extra.demo || "",
     brochure: extra.brochure || "",
+    video: extra.video || null,
     screens: extra.screens || [],
     kpis: kpiModule ? kpiModule.data : [],
     chart: chartModule ? chartModule.chart : null,

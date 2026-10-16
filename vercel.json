@@ -4,6 +4,13 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
+  "redirects": [
+    {
+      "source": "/products/solar-erp-10x",
+      "destination": "/products/saurya-2x",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

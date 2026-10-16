@@ -126,23 +126,39 @@ export function routeMeta(pathname) {
   if (prod) {
     const p = PRODUCTS.find((x) => x.id === prod[1]);
     if (p) {
+      const nodes = [
+        organization(),
+        {
+          "@type": "SoftwareApplication",
+          name: p.name,
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web",
+          description: p.blurb,
+          url: abs(path),
+          publisher: provider,
+        },
+      ];
+      // A walkthrough video makes the page eligible for Google's video
+      // results — but only if the file itself is described here.
+      if (p.video?.src) {
+        nodes.push({
+          "@type": "VideoObject",
+          name: p.video.title || `${p.name} walkthrough`,
+          description: clip(p.video.description || p.blurb, 300),
+          thumbnailUrl: SITE.url + p.video.poster,
+          contentUrl: SITE.url + p.video.src,
+          embedUrl: abs(path),
+          uploadDate: p.video.uploadDate,
+          ...(p.video.isoDuration && { duration: p.video.isoDuration }),
+          publisher: provider,
+        });
+      }
+      nodes.push(breadcrumbs([["Home", "/"], [p.name, path]]));
       return {
         title: `${p.name} — ${p.industry} | ${SITE.shortName}`,
         description: clip(p.blurb),
         canonical: abs(path),
-        jsonLd: graph(
-          organization(),
-          {
-            "@type": "SoftwareApplication",
-            name: p.name,
-            applicationCategory: "BusinessApplication",
-            operatingSystem: "Web",
-            description: p.blurb,
-            url: abs(path),
-            publisher: provider,
-          },
-          breadcrumbs([["Home", "/"], [p.name, path]]),
-        ),
+        jsonLd: graph(...nodes),
       };
     }
   }

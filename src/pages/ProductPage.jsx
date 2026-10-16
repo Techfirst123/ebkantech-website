@@ -6,10 +6,10 @@ import VideoModal from "../components/VideoModal";
 import TopBar from "../components/TopBar";
 
 /**
- * /products/<id> — one page per product: what it is, its tabbed module
- * preview (sample data), the HTML demo once one is seeded, and the product
- * brochure PDF. Content comes from components/ProductDemos.jsx (modules)
- * and data/demoShowcase.js (category, demo, brochure).
+ * /products/<id> — one page per product: what it is, its overview video
+ * once one is seeded, its tabbed module preview (sample data), and the HTML
+ * demo once one is seeded. Content comes from components/ProductDemos.jsx
+ * (modules) and data/demoShowcase.js (category, demo, video).
  * Styles: reuses the category-page classes in category.css (cp-).
  */
 
@@ -99,11 +99,6 @@ export default function ProductPage() {
                       Open live demo ↗
                     </a>
                   )}
-                  {product.brochure && (
-                    <a className={"btn" + (live || video ? " ghost" : "")} href={product.brochure} target="_blank" rel="noopener noreferrer">
-                      Product brochure (PDF) ↗
-                    </a>
-                  )}
                   <Link to="/#contact" className="btn ghost">
                     Book a live walkthrough
                   </Link>
@@ -124,8 +119,8 @@ export default function ProductPage() {
                   </h2>
                 </div>
                 <p>
-                  A {video.duration} walkthrough of the real application — every stage,
-                  end to end. No signup.
+                  {video.duration} on what the platform does — compliance gating, the
+                  field app, margin per Watt and the AI co-pilot roadmap.
                 </p>
               </div>
 

@@ -8,8 +8,10 @@ import { PROJECTS } from "../components/ProductDemos";
  *      e.g. public/demos/warehouse-erp/index.html
  *   2. Set `demo` below to "/demos/<id>/index.html"
  *   3. Optional: add screenshots to the same folder and list them in `screens`
- *   4. Optional: `brochure` — a PDF in the same folder, offered as a download
- *      on the product's page (/products/<id>)
+ *   4. Optional: `video` — { src, poster, title, duration, isoDuration,
+ *      uploadDate, description }. Adds a "Watch demo video" button and a
+ *      poster card to /products/<id>, and a VideoObject to its structured
+ *      data. The file is only fetched once a visitor presses play.
  *
  * Until `demo` is set, the card says "Sample-data preview" and its button
  * opens the in-page module preview instead — it never links to a demo that
@@ -38,18 +40,17 @@ export const SHOWCASE = {
     categories: ["ERP", "AI", "Data Science"], // AI co-pilot, risk prediction, BI
     featured: true,
     demo: "",
-    brochure: "/demos/saurya-2x/brochure.pdf",
     screens: [],
     video: {
-      src: "/demos/saurya-2x/saurya-2x-walkthrough.mp4",
+      src: "/demos/saurya-2x/saurya-2x-overview.mp4",
       poster: "/demos/saurya-2x/poster.jpg",
-      title: "Saurya2x — Solar EPC Cloud: application walkthrough",
+      title: "Saurya2x — Solar EPC Cloud: product overview",
       // shown on the button/card, and emitted as ISO-8601 in the VideoObject
-      duration: "12:30",
-      isoDuration: "PT12M30S",
-      uploadDate: "2026-10-16",
+      duration: "0:25",
+      isoDuration: "PT25S",
+      uploadDate: "2026-10-17",
       description:
-        "A full walkthrough of Saurya2x, the Solar EPC Cloud: design, procurement, field execution, QA, finance and handover in one platform, with compliance gating built in.",
+        "A short look at Saurya2x, the Solar EPC Cloud: compliance gating, the site-engineer field app, margin tracked down to the Watt, and the AI co-pilot and SCADA roadmap.",
     },
   },
   "vantage-rental-5x": {
@@ -57,7 +58,6 @@ export const SHOWCASE = {
     categories: ["ERP", "CRM", "Data Science"], // tenant/owner apps, churn, BI
     featured: true,
     demo: "",
-    brochure: "/demos/vantage-rental-5x/brochure.pdf",
     screens: [],
   },
   "compliance-10x": {
@@ -65,7 +65,6 @@ export const SHOWCASE = {
     categories: ["Web & App Development", "CRM", "Data Science"], // client portal, filing-risk BI
     featured: true,
     demo: "",
-    brochure: "/demos/compliance-10x/brochure.pdf",
     screens: [],
   },
 };
@@ -90,7 +89,6 @@ export const PRODUCTS = PROJECTS.map((p) => {
     categories: extra.categories || [],
     featured: !!extra.featured,
     demo: extra.demo || "",
-    brochure: extra.brochure || "",
     video: extra.video || null,
     screens: extra.screens || [],
     kpis: kpiModule ? kpiModule.data : [],

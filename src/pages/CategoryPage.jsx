@@ -129,7 +129,7 @@ export default function CategoryPage() {
                 <p>
                   {liveCount > 0
                     ? "Products marked HTML demo open a full working demo. Every product has its own page with a module preview filled with clearly-labelled sample data."
-                    : "Open any product to click through its modules, filled with clearly-labelled sample data, and download its brochure."}
+                    : "Open any product to click through its modules, filled with clearly-labelled sample data."}
                 </p>
               )}
             </div>

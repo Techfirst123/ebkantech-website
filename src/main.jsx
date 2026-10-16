@@ -7,6 +7,7 @@ import "./ebkan.css";
 import "./showcase.css";
 import "./hero-code.css";
 import "./category.css";
+import "./product.css";
 import "./vibrant.css";
 import "./boot.css";
 

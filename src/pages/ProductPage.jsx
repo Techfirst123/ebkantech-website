@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { PRODUCTS, featuredFirst, hasDemo, hasVideo } from "../data/demoShowcase";
 import { ModulePreview } from "../components/ProductDemos";
 import VideoModal from "../components/VideoModal";
+import TiltPanel from "../components/TiltPanel";
 import TopBar from "../components/TopBar";
 
 /**
- * /products/<id> — one page per product: what it is, its overview video
- * once one is seeded, its tabbed module preview (sample data), and the HTML
- * demo once one is seeded. Content comes from components/ProductDemos.jsx
- * (modules) and data/demoShowcase.js (category, demo, video).
- * Styles: reuses the category-page classes in category.css (cp-).
+ * /products/<id> — one page per product.
+ *
+ * Structure: a dark "instrument panel" hero over a light body. The hero's
+ * panel is the product itself — its overview video if one is seeded,
+ * otherwise its live KPI readout — tilted in 3D toward the pointer
+ * (components/TiltPanel.jsx). Everything below the hero is kept flat and
+ * quiet so the panel stays the one loud thing on the page.
+ *
+ * Content: components/ProductDemos.jsx (modules, KPIs) and
+ * data/demoShowcase.js (category, demo, video). Each product re-skins the
+ * page through --c-accent.
+ * Layout: Bootstrap 5 grid scoped to .bs (src/vendor/bootstrap-grid.scoped.css)
+ * Styles: src/product.css
  */
-
-const initials = (name) =>
-  name
-    .replace(/[^A-Za-z0-9 ]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
 
 function NotFound() {
   return (
@@ -39,6 +39,16 @@ function NotFound() {
     </>
   );
 }
+
+/* One orchestrated reveal on load, rather than an effect on every section. */
+const rise = {
+  hidden: { opacity: 0, y: 18 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.06 * i },
+  }),
+};
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -58,33 +68,66 @@ export default function ProductPage() {
   const live = hasDemo(product);
   const video = hasVideo(product) ? product.video : null;
   const others = featuredFirst(PRODUCTS).filter((p) => p.id !== product.id);
+  const kpis = (product.kpis || []).slice(0, 4);
 
   return (
     <>
       <TopBar />
-      <main className="cp" style={{ "--c-accent": product.accent }}>
-        <section className="cp-hero">
-          <div className="wrap">
-            <nav className="cp-crumb mono" aria-label="Breadcrumb">
+      <main className="pp" style={{ "--c-accent": product.accent }}>
+        {/* ---------------- HERO ---------------- */}
+        <section className="pp-hero">
+          <div className="wrap bs">
+            <nav className="pp-crumb mono" aria-label="Breadcrumb">
               <Link to="/">Home</Link>
               <span aria-hidden="true">/</span>
               <Link to="/#products">Products</Link>
               <span aria-hidden="true">/</span>
               <span aria-current="page">{product.name}</span>
             </nav>
-            <div className="cp-head">
-              <span className="cp-icon pp-mono" aria-hidden="true">
-                {initials(product.name)}
-              </span>
-              <div>
-                <p className="eyebrow">
-                  {product.category} · {product.industry}
-                </p>
-                <h1 className="cp-title">{product.name}</h1>
-                <p className="cp-sub">{product.blurb}</p>
-                <div className="pp-actions">
+
+            <div className="row pp-hero-grid g-4 g-lg-5">
+              <div className="col-12 col-lg-6">
+                <motion.span
+                  className="pp-tag"
+                  variants={rise}
+                  initial="hidden"
+                  animate="show"
+                  custom={0}
+                >
+                  <span className="pp-dot" aria-hidden="true" />
+                  <b>{product.category}</b>
+                  <span>{product.industry}</span>
+                </motion.span>
+
+                <motion.h1
+                  className="pp-name"
+                  variants={rise}
+                  initial="hidden"
+                  animate="show"
+                  custom={1}
+                >
+                  {product.name}
+                </motion.h1>
+
+                <motion.p
+                  className="pp-blurb"
+                  variants={rise}
+                  initial="hidden"
+                  animate="show"
+                  custom={2}
+                >
+                  {product.blurb}
+                </motion.p>
+
+                <motion.div
+                  className="pp-actions"
+                  variants={rise}
+                  initial="hidden"
+                  animate="show"
+                  custom={3}
+                >
                   {video && (
-                    <button type="button" className="btn pp-play" onClick={() => setVideoOpen(true)}>
+                    <button type="button" className="pp-btn" onClick={() => setVideoOpen(true)}>
                       <span className="pp-play-ico" aria-hidden="true">
                         ▶
                       </span>
@@ -95,105 +138,149 @@ export default function ProductPage() {
                     </button>
                   )}
                   {live && (
-                    <a className={"btn" + (video ? " ghost" : "")} href={product.demo} target="_blank" rel="noopener noreferrer">
-                      Open live demo ↗
+                    <a
+                      className={"pp-btn" + (video ? " pp-btn-ghost" : "")}
+                      href={product.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open live demo
                     </a>
                   )}
-                  <Link to="/#contact" className="btn ghost">
+                  <Link to="/#contact" className="pp-btn pp-btn-ghost">
                     Book a live walkthrough
                   </Link>
+                </motion.div>
+              </div>
+
+              <div className="col-12 col-lg-6">
+                <div className="pp-stage">
+                  <TiltPanel
+                    className="pp-panel"
+                    {...(video
+                      ? {
+                          role: "button",
+                          tabIndex: 0,
+                          onClick: () => setVideoOpen(true),
+                          onKeyDown: (e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setVideoOpen(true);
+                            }
+                          },
+                          "aria-label": `Play video: ${video.title}`,
+                        }
+                      : {})}
+                  >
+                    <div className="pp-chrome" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                      <span className="mono">
+                        {video ? `${product.name} — overview` : `${product.name} — live dashboard`}
+                      </span>
+                    </div>
+
+                    {video ? (
+                      <span className="pp-shot">
+                        <img src={video.poster} alt="" width="1280" height="720" />
+                        <span className="pp-shot-veil" aria-hidden="true" />
+                        <span className="pp-shot-cap">
+                          <b>{video.title}</b>
+                          <span className="mono">{video.duration}</span>
+                        </span>
+                        <span className="pp-shot-play" aria-hidden="true">
+                          ▶
+                        </span>
+                      </span>
+                    ) : (
+                      <div className="pp-readout">
+                        {kpis.map((k) => (
+                          <div key={k.lbl}>
+                            <div className="v">{k.val}</div>
+                            <div className="l">{k.lbl}</div>
+                            <div className="s">{k.sub}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </TiltPanel>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {video && (
-          <section className="cp-section">
-            <div className="wrap">
-              <div className="sec-head">
-                <div>
-                  <span className="eyebrow">Product walkthrough</span>
-                  <h2>
-                    See <span className="hl">{product.name}</span> in motion
-                  </h2>
-                </div>
-                <p>
-                  {video.duration} on what the platform does — compliance gating, the
-                  field app, margin per Watt and the AI co-pilot roadmap.
-                </p>
+        {/* ---------------- BODY ---------------- */}
+        <div className="pp-body">
+          <section className="pp-sec">
+            <div className="wrap bs">
+              <h2 className="pp-h2">What it covers</h2>
+              <p className="pp-lead">
+                {product.modules.length} working areas, each with its own screens and
+                sample data.
+              </p>
+              <div className="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+                {product.modules.map((m) => (
+                  <div className="col" key={m.name}>
+                    <div className="pp-mod">
+                      <span className="pp-mod-kind mono">{moduleKind(m)}</span>
+                      <h3>{m.name}</h3>
+                      <p>{moduleLine(m)}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-
-              <button
-                type="button"
-                className="pp-videocard"
-                onClick={() => setVideoOpen(true)}
-                aria-label={`Play video: ${video.title}`}
-              >
-                <img className="pp-videocard-img" src={video.poster} alt="" width="1280" height="720" loading="lazy" />
-                <span className="pp-videocard-shade" aria-hidden="true" />
-                <span className="pp-videocard-play" aria-hidden="true">
-                  ▶
-                </span>
-                <span className="pp-videocard-meta">
-                  <span className="pp-videocard-title">{video.title}</span>
-                  <span className="pp-videocard-len mono">{video.duration}</span>
-                </span>
-              </button>
             </div>
           </section>
-        )}
 
-        <section className="cp-section">
-          <div className="wrap">
-            <div className="sec-head">
-              <div>
-                <span className="eyebrow">Inside the product</span>
-                <h2>
-                  Walk through <span className="hl">{product.name}</span>
-                </h2>
-              </div>
-              <p>
-                {product.modules.length} modules — click through the same
-                screens your team would use, filled with sample data.
+          <section className="pp-sec">
+            <div className="wrap">
+              <h2 className="pp-h2">Click through it</h2>
+              <p className="pp-lead">
+                The same screens your team would use, filled with clearly-labelled
+                sample data.
               </p>
+              <ModulePreview project={product} />
             </div>
-            <ModulePreview project={product} />
-          </div>
-        </section>
+          </section>
 
-        <section className="cp-section">
-          <div className="wrap">
-            <span className="eyebrow">Other products</span>
-            <div className="cp-others">
-              {others.map((p) => (
-                <Link key={p.id} to={`/products/${p.id}`} className="cp-other" style={{ "--c-accent": p.accent }}>
-                  <span className="cc-icon cc-icon-sm pp-mono" aria-hidden="true">
-                    {initials(p.name)}
-                  </span>
-                  <span className="cp-other-name">{p.name}</span>
-                  <span className="cp-other-go" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="cp-section">
-          <div className="wrap">
-            <div className="cp-cta">
-              <div>
-                <h2>See {product.name} on your own data</h2>
-                <p>Book a 30-minute walkthrough — we&apos;ll show you your own dashboard.</p>
+          <section className="pp-sec">
+            <div className="wrap">
+              <h2 className="pp-h2">Other products</h2>
+              <p className="pp-lead">Built the same way, for a different operation.</p>
+              <div className="pp-others">
+                {others.map((p) => (
+                  <Link
+                    key={p.id}
+                    to={`/products/${p.id}`}
+                    className="pp-other"
+                    style={{ "--c-accent": p.accent }}
+                  >
+                    <span className="pp-other-t">
+                      <span className="pp-other-n">{p.name}</span>
+                      <span className="pp-other-i mono">{p.category}</span>
+                    </span>
+                  </Link>
+                ))}
               </div>
-              <Link to="/#contact" className="btn">
-                Start a conversation
-              </Link>
             </div>
-          </div>
-        </section>
+          </section>
+
+          <section className="pp-sec">
+            <div className="wrap">
+              <div className="pp-cta">
+                <div>
+                  <h2>See {product.name} on your own data</h2>
+                  <p>A 30-minute walkthrough, using numbers from your operation.</p>
+                </div>
+                <Link to="/#contact" className="pp-btn">
+                  Start a conversation
+                </Link>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
 
       <VideoModal
@@ -204,4 +291,44 @@ export default function ProductPage() {
       />
     </>
   );
+}
+
+/**
+ * What kind of screen a module is. Modules are parallel areas, not an
+ * ordered process, so they carry a type label rather than a step number.
+ */
+function moduleKind(m) {
+  return (
+    {
+      kpi: "numbers",
+      timeline: "timeline",
+      table: "register",
+      chart: "chart",
+      scorelist: "ranking",
+      chat: "assistant",
+      kanban: "board",
+    }[m.type] || "screen"
+  );
+}
+
+/** A plain-language line for each module, derived from what it actually shows. */
+function moduleLine(m) {
+  switch (m.type) {
+    case "kpi":
+      return `${m.data.length} headline numbers, refreshed as work is logged.`;
+    case "timeline":
+      return `${m.items.length} stages, from first contact through to handover.`;
+    case "table":
+      return `A working register — ${m.columns.slice(0, 3).join(", ").toLowerCase()} and more.`;
+    case "chart":
+      return m.note || "A breakdown you can read at a glance.";
+    case "scorelist":
+      return `Ranked by risk, so the ones needing attention surface first.`;
+    case "chat":
+      return "Ask it a question in plain English and get the number back.";
+    case "kanban":
+      return "Work moving stage by stage, with nothing dropped between them.";
+    default:
+      return "Part of the same connected system.";
+  }
 }

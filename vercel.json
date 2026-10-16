@@ -9,6 +9,11 @@
       "source": "/products/solar-erp-10x",
       "destination": "/products/saurya-2x",
       "permanent": true
+    },
+    {
+      "source": "/demos/solar-erp-10x/:file",
+      "destination": "/demos/saurya-2x/:file",
+      "permanent": true
     }
   ],
   "rewrites": [

@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import App from "./App.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
+import PrivacyPage from "./pages/PrivacyPage.jsx";
 import FloatingContact from "./components/FloatingContact.jsx";
 import BootScreen from "./components/BootScreen.jsx";
 import useSeo from "./useSeo";
@@ -23,6 +24,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/services/:slug" element={<CategoryPage />} />
         <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="*" element={<App />} />
       </Routes>
       {/* "Get in touch" tab + WhatsApp button, on every page */}

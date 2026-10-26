@@ -32,10 +32,12 @@ const ICONS = {
 };
 
 export const MILESTONES = [
-  { value: "9", label: "Solution areas", sub: "From analytics and AI to ERP", icon: "areas" },
-  { value: "15", label: "ERP verticals delivered", sub: "Built and handed over", icon: "erp" },
-  { value: "20+", label: "Industries served", sub: "Supply chain to solar EPC", icon: "industries" },
-  { value: "End-to-end", label: "Data to dashboard", sub: "Strategy → build → support", icon: "flow" },
+  // Facts about what Ebkan Tech has built. If you add team-experience
+  // numbers (e.g. "15 ERP builds"), label them as the team's track record.
+  { value: "5", label: "ERP products built", sub: "Solar, real estate, compliance, logistics", icon: "areas" },
+  { value: "15", label: "Modules in Saurya2x", sub: "Tender to handover, one record", icon: "erp" },
+  { value: "6 wk", label: "Typical rollout", sub: "Including Excel data migration", icon: "flow" },
+  { value: "End-to-end", label: "Build, deploy, support", sub: "Product + data science + BI", icon: "industries" },
 ];
 
 export default function Milestones() {

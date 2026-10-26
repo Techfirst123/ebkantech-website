@@ -321,8 +321,8 @@ export const PROJECTS = [
     ],
   },
   {
-    // Source: SolarERP10x_Product_Demo_EbkanTech.pdf (all figures are its demo data)
-    // Shipped as Saurya2x — Solar EPC Cloud. Old id solar-erp-10x is 301'd in vercel.json.
+    // Source: the Solar EPC product demo brochure (all figures are its demo data).
+    // Final product name: Saurya2x. Old URL /products/solar-erp-10x is 301'd in vercel.json.
     id: "saurya-2x",
     // Saurya2x brand violet, sampled from the product logo
     accent: "#6860E8",

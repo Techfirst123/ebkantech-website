@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/ebkan-tech-logo.png" />
-    <meta name="description" content="Ebkan Tech Pvt Ltd — data science, ERP and CRM solutions for supply chain, healthcare, e-commerce, solar EPC and construction." />
+    <meta name="description" content="Ebkan Tech Pvt Ltd builds industry ERP products — led by Saurya2x, the ERP for solar EPC — plus data science and BI." />
     <!-- dark until the app (and its loading screen) mounts: no white flash -->
-    <style>html:has(#root:empty){background:#070b10}</style>
-    <title>Ebkan Tech — Data Science, ERP &amp; CRM Solutions</title>
+    <style>html:has(#root:empty){background:#070b10}.boot-seen .boot{display:none}</style>
+    <!-- the loading screen shows once per visit; skip it before first paint after that -->
+    <script>try{if(sessionStorage.getItem("ebkan-boot-seen"))document.documentElement.classList.add("boot-seen")}catch(e){}</script>
+    <title>Ebkan Tech — Saurya2x Solar EPC ERP, Industry ERPs &amp; Data Science</title>
   </head>
   <body>
     <div id="root"></div>

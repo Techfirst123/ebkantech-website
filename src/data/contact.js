@@ -7,6 +7,6 @@
  * While it's empty, the WhatsApp button is not shown at all.
  */
 export const WHATSAPP = {
-  number: "",
+  number: "918509623453",
   message: "Hi Ebkan Tech, I saw your website and would like to talk about a project.",
 };

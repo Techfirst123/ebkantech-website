@@ -131,7 +131,8 @@ function FlowDiagram() {
 function Counter({ target, suffix = "", decimals = 0, size = "lg" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: false, margin: "-50px" });
-  const [value, setValue] = useState(0);
+  // start at the real number, so prerendered HTML and no-JS visitors never see "0"
+  const [value, setValue] = useState(target);
 
   useEffect(() => {
     if (!inView) return;
@@ -441,9 +442,9 @@ const services = [
     render: () => (
       <div className="mt-4 flex items-end justify-between gap-4">
         <div className="flex flex-col gap-1.5">
-          <Stat target={87} suffix="%" label="Live KPI accuracy" />
-          <Stat target={1240} label="Records synced / hr" />
-          <Stat target={4.9} decimals={1} label="Avg. client rating" />
+          <Stat target={18.6} decimals={1} suffix=" MW" label="In execution (sample)" />
+          <Stat target={6} suffix=" of 9" label="On schedule (sample)" />
+          <Stat target={41} suffix="%" label="Spend on modules (sample)" />
         </div>
         <div className="w-20">
           <BarChart values={[40, 65, 50, 85, 60]} color="#38bdf8" />

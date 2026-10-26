@@ -36,8 +36,8 @@ function head(m) {
     `<meta property="og:title" content="${esc(m.title)}" />`,
     `<meta property="og:description" content="${esc(m.description)}" />`,
     `<meta property="og:url" content="${esc(m.canonical)}" />`,
-    `<meta property="og:image" content="${esc(SITE.url + SITE.logo)}" />`,
-    `<meta name="twitter:card" content="summary" />`,
+    `<meta property="og:image" content="${esc(m.image || SITE.url + SITE.logo)}" />`,
+    `<meta name="twitter:card" content="${m.image ? "summary_large_image" : "summary"}" />`,
     `<meta name="twitter:title" content="${esc(m.title)}" />`,
     `<meta name="twitter:description" content="${esc(m.description)}" />`,
     SITE.googleVerification

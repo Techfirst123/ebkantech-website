@@ -6,23 +6,18 @@ import { markBooted, reducedMotion } from "../motion";
  * in-app navigation): boot lines tick off one by one while a progress bar
  * runs to 100%, then "Welcome to Ebkan Tech" — and it fades into the page.
  *
- * - ~3 s total. Click anywhere / press Esc / "Skip" to jump straight in.
+ * - Under 1 s total, and shown once per browser session: later page loads
+ *   in the same visit skip it. Click anywhere / Esc / "Skip" to jump in.
  * - Reduced motion: shows the finished state briefly, no animation.
  * - Calls markBooted() when done, so hero animations start on cue.
  * Styles: boot.css (.boot).
  */
 
-const LINES = [
-  "Initializing Ebkan platform...",
-  "Loading data models...",
-  "Fetching ERP products...",
-  "Syncing CRM pipelines...",
-  "Connecting dashboards...",
-  "All systems ready...",
-];
-const STEP_MS = 330; // per boot line
-const WELCOME_HOLD_MS = 650; // after "Welcome", before fading out
-const FADE_MS = 450;
+const LINES = ["Loading Saurya2x · Solar EPC ERP", "Loading products & services", "Ready"];
+const STEP_MS = 170; // per boot line
+const WELCOME_HOLD_MS = 280; // after "Welcome", before fading out
+const FADE_MS = 300;
+const SEEN_KEY = "ebkan-boot-seen";
 
 export default function BootScreen() {
   const reduce = reducedMotion();
@@ -32,8 +27,13 @@ export default function BootScreen() {
   const [gone, setGone] = useState(false);
   const timers = useRef([]);
 
-  const finish = () => {
+  const finish = (instant = false) => {
     if (leaving) return;
+    try {
+      sessionStorage.setItem(SEEN_KEY, "1");
+    } catch {
+      /* storage blocked — the loader just shows again next time */
+    }
     timers.current.forEach(clearTimeout);
     setDone(LINES.length);
     setLeaving(true);
@@ -44,7 +44,7 @@ export default function BootScreen() {
         document.documentElement.style.overflow = "";
         setGone(true);
         markBooted();
-      }, FADE_MS),
+      }, instant ? 0 : FADE_MS),
     ];
   };
 
@@ -54,14 +54,23 @@ export default function BootScreen() {
     const prevOverflow = html.style.overflow;
     html.style.overflow = "hidden";
 
-    if (reduce) {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(SEEN_KEY) === "1";
+    } catch {
+      seen = false;
+    }
+
+    if (seen) {
+      finish(true);
+    } else if (reduce) {
       setDone(LINES.length);
-      timers.current.push(setTimeout(finish, 700));
+      timers.current.push(setTimeout(finish, 400));
     } else {
       LINES.forEach((_, i) => {
-        timers.current.push(setTimeout(() => setDone(i + 1), 250 + STEP_MS * (i + 1)));
+        timers.current.push(setTimeout(() => setDone(i + 1), 120 + STEP_MS * (i + 1)));
       });
-      timers.current.push(setTimeout(finish, 250 + STEP_MS * LINES.length + WELCOME_HOLD_MS));
+      timers.current.push(setTimeout(finish, 120 + STEP_MS * LINES.length + WELCOME_HOLD_MS));
     }
 
     const onKey = (e) => {
@@ -92,7 +101,7 @@ export default function BootScreen() {
       role="status"
       aria-live="polite"
       aria-label={ready ? "Ebkan Tech is ready" : `Loading Ebkan Tech, ${percent}%`}
-      onClick={finish}
+      onClick={() => finish()}
     >
       <div className="boot-win" onClick={(e) => e.stopPropagation()}>
         <div className="boot-bar">
@@ -101,13 +110,12 @@ export default function BootScreen() {
             <i />
             <i />
           </span>
-          <span className="boot-title">ebkantech.com — bash</span>
-          <span className="boot-ver">v3.0.0</span>
+          <span className="boot-title">ebkantech.com</span>
         </div>
 
         <div className="boot-body">
           <p className="boot-tag">
-            <span aria-hidden="true">[</span> Ebkan Tech OS — Data · ERP · CRM <span aria-hidden="true">]</span>
+            <span aria-hidden="true">[</span> Ebkan Tech — Industry ERP · Data <span aria-hidden="true">]</span>
           </p>
 
           <ul className="boot-lines">
@@ -145,7 +153,7 @@ export default function BootScreen() {
         </div>
       </div>
 
-      <button type="button" className="boot-skip" onClick={finish}>
+      <button type="button" className="boot-skip" onClick={() => finish()}>
         Skip ›
       </button>
     </div>

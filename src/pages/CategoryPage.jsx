@@ -5,6 +5,7 @@ import { hasDemo, productsIn } from "../data/demoShowcase";
 import { ProductGrid } from "../components/DemoShowcase";
 import { CategoryIcon } from "../components/CategoryCards";
 import TopBar from "../components/TopBar";
+import SiteFooter from "../components/SiteFooter";
 
 /**
  * /services/<slug> — one page per Scope-of-business category: its services
@@ -183,6 +184,7 @@ export default function CategoryPage() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }

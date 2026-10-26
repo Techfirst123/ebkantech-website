@@ -44,13 +44,13 @@ export const SHOWCASE = {
     video: {
       src: "/demos/saurya-2x/saurya-2x-overview.mp4",
       poster: "/demos/saurya-2x/poster.jpg",
-      title: "Saurya2x — Solar EPC Cloud: product overview",
+      title: "Saurya2x — Solar EPC ERP: product overview",
       // shown on the button/card, and emitted as ISO-8601 in the VideoObject
       duration: "0:25",
       isoDuration: "PT25S",
       uploadDate: "2026-10-17",
       description:
-        "A short look at Saurya2x, the Solar EPC Cloud: compliance gating, the site-engineer field app, margin tracked down to the Watt, and the AI co-pilot and SCADA roadmap.",
+        "A short look at Saurya2x, the ERP for solar EPC: compliance gating, the site-engineer field app, margin tracked down to the Watt, and the AI co-pilot and SCADA roadmap.",
     },
   },
   "vantage-rental-5x": {

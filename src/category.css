@@ -519,3 +519,27 @@ section.cp-section:last-child {
     transform: none;
   }
 }
+
+/* /privacy */
+.legal-page {
+  max-width: 760px;
+  padding-top: 40px;
+  padding-bottom: 70px;
+}
+.legal-page h2 {
+  font-size: 1.15rem;
+  margin: 32px 0 8px;
+  letter-spacing: -0.01em;
+}
+.legal-page p {
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0 0 12px;
+}
+.legal-page a {
+  color: var(--accent);
+}
+.legal-updated {
+  font-size: 0.75rem;
+  color: var(--meta) !important;
+}

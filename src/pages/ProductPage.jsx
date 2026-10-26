@@ -6,6 +6,8 @@ import { ModulePreview } from "../components/ProductDemos";
 import VideoModal from "../components/VideoModal";
 import TiltPanel from "../components/TiltPanel";
 import TopBar from "../components/TopBar";
+import SiteFooter from "../components/SiteFooter";
+import { STORY } from "../data/productStory";
 
 /**
  * /products/<id> — one page per product.
@@ -69,6 +71,9 @@ export default function ProductPage() {
   const video = hasVideo(product) ? product.video : null;
   const others = featuredFirst(PRODUCTS).filter((p) => p.id !== product.id);
   const kpis = (product.kpis || []).slice(0, 4);
+  const story = STORY[product.id] || null;
+  // pre-selects this product in the home-page enquiry form
+  const contactTo = `/?interest=${product.id}#contact`;
 
   return (
     <>
@@ -108,6 +113,17 @@ export default function ProductPage() {
                 >
                   {product.name}
                 </motion.h1>
+                {story && (
+                  <motion.p
+                    className="pp-headline"
+                    variants={rise}
+                    initial="hidden"
+                    animate="show"
+                    custom={1.5}
+                  >
+                    {story.headline}
+                  </motion.p>
+                )}
 
                 <motion.p
                   className="pp-blurb"
@@ -116,7 +132,7 @@ export default function ProductPage() {
                   animate="show"
                   custom={2}
                 >
-                  {product.blurb}
+                  {story ? story.sub : product.blurb}
                 </motion.p>
 
                 <motion.div
@@ -147,10 +163,23 @@ export default function ProductPage() {
                       Open live demo
                     </a>
                   )}
-                  <Link to="/#contact" className="pp-btn pp-btn-ghost">
-                    Book a live walkthrough
+                  <Link to={contactTo} className={"pp-btn" + (video || live ? " pp-btn-ghost" : "")}>
+                    Book a live demo
                   </Link>
                 </motion.div>
+                {story?.trust && (
+                  <motion.ul
+                    className="pp-trust"
+                    variants={rise}
+                    initial="hidden"
+                    animate="show"
+                    custom={4}
+                  >
+                    {story.trust.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </motion.ul>
+                )}
               </div>
 
               <div className="col-12 col-lg-6">
@@ -183,7 +212,7 @@ export default function ProductPage() {
 
                     {video ? (
                       <span className="pp-shot">
-                        <img src={video.poster} alt="" width="1280" height="720" />
+                        <img src={video.poster} alt={`${product.name} product overview video`} width="1280" height="720" />
                         <span className="pp-shot-veil" aria-hidden="true" />
                         <span className="pp-shot-cap">
                           <b>{video.title}</b>
@@ -213,6 +242,9 @@ export default function ProductPage() {
 
         {/* ---------------- BODY ---------------- */}
         <div className="pp-body">
+          {story && <StorySections story={story} />}
+
+          {!story && (
           <section className="pp-sec">
             <div className="wrap bs">
               <h2 className="pp-h2">What it covers</h2>
@@ -224,7 +256,6 @@ export default function ProductPage() {
                 {product.modules.map((m) => (
                   <div className="col" key={m.name}>
                     <div className="pp-mod">
-                      <span className="pp-mod-kind mono">{moduleKind(m)}</span>
                       <h3>{m.name}</h3>
                       <p>{moduleLine(m)}</p>
                     </div>
@@ -233,15 +264,42 @@ export default function ProductPage() {
               </div>
             </div>
           </section>
+          )}
 
           <section className="pp-sec">
             <div className="wrap">
-              <h2 className="pp-h2">Click through it</h2>
+              <h2 className="pp-h2">Click through the product</h2>
               <p className="pp-lead">
                 The same screens your team would use, filled with clearly-labelled
-                sample data.
+                sample data from a demo portfolio.
               </p>
               <ModulePreview project={product} />
+            </div>
+          </section>
+
+          {story?.compare && <Compare data={story.compare} name={product.name} />}
+          {story?.integrations && <Integrations data={story.integrations} />}
+          {story?.rollout && <Rollout data={story.rollout} />}
+          {story?.faq && <Faq items={story.faq} />}
+
+          <section className="pp-sec">
+            <div className="wrap">
+              <div className="pp-cta">
+                <div>
+                  <h2>{story?.cta?.title || `See ${product.name} on your own data`}</h2>
+                  <p>{story?.cta?.text || "A 30-minute walkthrough, using numbers from your operation."}</p>
+                </div>
+                <div className="pp-cta-actions">
+                  <Link to={contactTo} className="pp-btn">
+                    {story?.cta?.button || "Book a live demo"}
+                  </Link>
+                  {video && (
+                    <button type="button" className="pp-btn pp-btn-ghost" onClick={() => setVideoOpen(true)}>
+                      ▶ Watch the overview
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
 
@@ -267,21 +325,9 @@ export default function ProductPage() {
             </div>
           </section>
 
-          <section className="pp-sec">
-            <div className="wrap">
-              <div className="pp-cta">
-                <div>
-                  <h2>See {product.name} on your own data</h2>
-                  <p>A 30-minute walkthrough, using numbers from your operation.</p>
-                </div>
-                <Link to="/#contact" className="pp-btn">
-                  Start a conversation
-                </Link>
-              </div>
-            </div>
-          </section>
         </div>
       </main>
+      <SiteFooter />
 
       <VideoModal
         open={videoOpen}
@@ -293,24 +339,6 @@ export default function ProductPage() {
   );
 }
 
-/**
- * What kind of screen a module is. Modules are parallel areas, not an
- * ordered process, so they carry a type label rather than a step number.
- */
-function moduleKind(m) {
-  return (
-    {
-      kpi: "numbers",
-      timeline: "timeline",
-      table: "register",
-      chart: "chart",
-      scorelist: "ranking",
-      chat: "assistant",
-      kanban: "board",
-    }[m.type] || "screen"
-  );
-}
-
 /** A plain-language line for each module, derived from what it actually shows. */
 function moduleLine(m) {
   switch (m.type) {
@@ -319,7 +347,7 @@ function moduleLine(m) {
     case "timeline":
       return `${m.items.length} stages, from first contact through to handover.`;
     case "table":
-      return `A working register — ${m.columns.slice(0, 3).join(", ").toLowerCase()} and more.`;
+      return `A live register of ${listJoin(m.columns.map((c) => c.toLowerCase()))}.`;
     case "chart":
       return m.note || "A breakdown you can read at a glance.";
     case "scorelist":
@@ -331,4 +359,245 @@ function moduleLine(m) {
     default:
       return "Part of the same connected system.";
   }
+}
+
+function listJoin(a) {
+  return a.length < 2 ? a.join("") : `${a.slice(0, -1).join(", ")} and ${a[a.length - 1]}`;
+}
+
+/* ---------------- long-form sales sections (data/productStory.js) ---------------- */
+
+function Head({ eyebrow, title, lead }) {
+  return (
+    <>
+      {eyebrow && <span className="pp-eyebrow mono">{eyebrow}</span>}
+      <h2 className="pp-h2">{title}</h2>
+      {lead && <p className="pp-lead">{lead}</p>}
+    </>
+  );
+}
+
+function StorySections({ story }) {
+  const { facts, problems, differentiators, workstreams, audience } = story;
+  return (
+    <>
+      {facts && (
+        <section className="pp-facts-sec">
+          <div className="wrap">
+            <dl className="pp-facts">
+              {facts.map((f) => (
+                <div key={f.lbl}>
+                  <dt>{f.val}</dt>
+                  <dd>{f.lbl}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
+
+      {problems && (
+        <section className="pp-sec">
+          <div className="wrap">
+            <Head eyebrow="Why EPC teams switch" title={problems.title} lead={problems.lead} />
+            <div className="pp-probs">
+              {problems.items.map((x) => (
+                <div className="pp-prob" key={x.p}>
+                  <p className="pp-prob-p">
+                    <span className="pp-x" aria-hidden="true">✕</span>
+                    {x.p}
+                  </p>
+                  <p className="pp-prob-f">
+                    <span className="pp-ok" aria-hidden="true">✓</span>
+                    {x.f}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {differentiators && (
+        <section className="pp-sec pp-sec-dark">
+          <div className="wrap">
+            <Head eyebrow="What makes it different" title={differentiators.title} lead={differentiators.lead} />
+            <ol className="pp-diffs">
+              {differentiators.items.map((x, i) => (
+                <li key={x.t}>
+                  <span className="pp-diff-n">{i + 1}</span>
+                  <h3>{x.t}</h3>
+                  <p>{x.d}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {workstreams && (
+        <section className="pp-sec">
+          <div className="wrap">
+            <Head eyebrow="What's inside" title={workstreams.title} lead={workstreams.lead} />
+            <div className="pp-ws">
+              {workstreams.items.map((x) => (
+                <div className="pp-mod" key={x.t}>
+                  <span className="pp-ws-dot" aria-hidden="true" />
+                  <h3>{x.t}</h3>
+                  <p>{x.d}</p>
+                </div>
+              ))}
+            </div>
+            {workstreams.plus && (
+              <>
+                <h3 className="pp-h3">Plus</h3>
+                <div className="pp-plus">
+                  {workstreams.plus.map((x) => (
+                    <div key={x.t}>
+                      <h4>{x.t}</h4>
+                      <p>{x.d}</p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {audience && (
+        <section className="pp-sec">
+          <div className="wrap">
+            <Head eyebrow="Who it's for" title={audience.title} lead={audience.lead} />
+            <div className="pp-types">
+              {audience.types.map((t) => (
+                <span key={t}>{t}</span>
+              ))}
+            </div>
+            <div className="pp-roles">
+              {audience.roles.map(([r, d]) => (
+                <div key={r}>
+                  <b>{r}</b>
+                  <span>{d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
+const MARK = {
+  yes: { sym: "✓", label: "Yes" },
+  partial: { sym: "Partly", label: "Partly" },
+  no: { sym: "—", label: "No" },
+};
+
+function Compare({ data, name }) {
+  return (
+    <section className="pp-sec">
+      <div className="wrap">
+        <Head eyebrow="Comparison" title={data.title} />
+        <div className="pp-cmp-scroll">
+          <table className="pp-cmp">
+            <thead>
+              <tr>
+                <th scope="col">
+                  <span className="sr-only">Capability</span>
+                </th>
+                {data.cols.map((c) => (
+                  <th scope="col" key={c} className={c === name ? "is-us" : ""}>
+                    {c}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.rows.map(([label, ...vals]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  {vals.map((v, i) => (
+                    <td key={i} className={`m-${v}` + (data.cols[i] === name ? " is-us" : "")}>
+                      <span aria-hidden="true">{MARK[v].sym}</span>
+                      <span className="sr-only">{MARK[v].label}</span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="pp-cmp-key mono">✓ built in · Partly = limited, or needs workarounds · — not available</p>
+      </div>
+    </section>
+  );
+}
+
+function Integrations({ data }) {
+  return (
+    <section className="pp-sec" id="security">
+      <div className="wrap">
+        <div className="pp-int">
+          <div>
+            <Head eyebrow="Connected" title={data.title} />
+            <div className="pp-int-grid">
+              {data.items.map(([t, d]) => (
+                <div key={t}>
+                  <h4>{t}</h4>
+                  <p>{d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <aside className="pp-sec-card">
+            <span className="pp-eyebrow mono">Security &amp; data</span>
+            <ul>
+              {data.security.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Rollout({ data }) {
+  return (
+    <section className="pp-sec">
+      <div className="wrap">
+        <Head eyebrow="Implementation" title={data.title} lead={data.lead} />
+        <ol className="pp-roll">
+          {data.steps.map(([w, t, d]) => (
+            <li key={w}>
+              <span className="mono">{w}</span>
+              <h4>{t}</h4>
+              <p>{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function Faq({ items }) {
+  return (
+    <section className="pp-sec" id="faq">
+      <div className="wrap">
+        <Head eyebrow="FAQ" title="Questions EPC teams ask us" />
+        <div className="pp-faq">
+          {items.map((x, i) => (
+            <details key={x.q} open={i === 0}>
+              <summary>{x.q}</summary>
+              <p>{x.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

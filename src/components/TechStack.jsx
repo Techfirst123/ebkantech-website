@@ -7,7 +7,7 @@ import { gsap, reducedMotion, ScrollTrigger, whenBooted } from "../motion";
  *   Motion: GSAP — cards rise in with a stagger, then their chips pop in.
  *
  * Content rule: list only what Ebkan Tech actually uses or builds.
- * Our ERP/CRM products are in development, and are labelled that way.
+ * Saurya2x is live; products still in development are labelled that way.
  * Styles: vibrant.css (.tk).
  */
 
@@ -42,8 +42,8 @@ export const TECH = [
     featured: true,
     // our own products — only names and what each is for
     products: [
-      { name: "ERP Saurya 2x", for: "Power & solar" },
-      { name: "ERP Niraman 2x", for: "Infrastructure projects" },
+      { name: "Saurya2x", for: "Solar EPC ERP · live" },
+      { name: "Niraman2x", for: "Infrastructure ERP · in development" },
       { name: "Vantage 2x", for: "Rental CRM" },
       { name: "Lead2x", for: "Sales CRM" },
     ],

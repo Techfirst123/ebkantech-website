@@ -100,7 +100,7 @@ export const SCOPE = [
     cat: "ERP",
     slug: "erp",
     accent: "#C97A1F",
-    sub: "Our own ERP products for power, solar and infrastructure projects.",
+    sub: "Our own ERP products for solar EPC and infrastructure projects.",
     icon: (
       <>
         <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -112,10 +112,10 @@ export const SCOPE = [
     items: [
       {
         code: "ERP-01",
-        title: "ERP Saurya 2x",
-        desc: "Our ERP for power and solar projects.",
-        tags: ["Power", "Solar"],
-        badge: "In development",
+        title: "Saurya2x",
+        desc: "The ERP for solar EPC — compliance-gated execution, solar-native BOQ, field app and per-Watt margin.",
+        tags: ["Solar EPC", "Live"],
+        badge: "Live",
         icon: (
           <>
             <circle cx="12" cy="12" r="4" />
@@ -125,7 +125,7 @@ export const SCOPE = [
       },
       {
         code: "ERP-02",
-        title: "ERP Niraman 2x",
+        title: "Niraman2x",
         desc: "Our ERP for infrastructure projects.",
         tags: ["Infrastructure", "Projects"],
         badge: "In development",

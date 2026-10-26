@@ -1,6 +1,7 @@
 import { SITE } from "./data/site";
 import { SCOPE } from "./data/scope";
 import { PRODUCTS } from "./data/demoShowcase";
+import { STORY } from "./data/productStory";
 
 /**
  * Per-page SEO, built from the site's own content — one source for both
@@ -68,6 +69,7 @@ export function allRoutes() {
     "/",
     ...SCOPE.map((c) => `/services/${c.slug}`),
     ...PRODUCTS.map((p) => `/products/${p.id}`),
+    "/privacy",
   ];
 }
 
@@ -75,9 +77,18 @@ export function allRoutes() {
 export function routeMeta(pathname) {
   const path = pathname.replace(/\/+$/, "") || "/";
 
+  if (path === "/privacy") {
+    return {
+      title: `Privacy policy | ${SITE.shortName}`,
+      description: clip(`How ${SITE.name} handles the information you share through this website.`),
+      canonical: abs("/privacy"),
+      jsonLd: graph(organization()),
+    };
+  }
+
   if (path === "/") {
     return {
-      title: "Ebkan Tech — Data Science, ERP & CRM Software Company",
+      title: "Ebkan Tech — Saurya2x Solar EPC ERP, Industry ERPs & Data Science",
       description: clip(SITE.description),
       canonical: abs("/"),
       jsonLd: graph(organization(), {
@@ -153,11 +164,26 @@ export function routeMeta(pathname) {
           publisher: provider,
         });
       }
+      const story = STORY[p.id];
+      if (story?.faq?.length) {
+        nodes.push({
+          "@type": "FAQPage",
+          mainEntity: story.faq.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        });
+      }
       nodes.push(breadcrumbs([["Home", "/"], [p.name, path]]));
       return {
-        title: `${p.name} — ${p.industry} | ${SITE.shortName}`,
-        description: clip(p.blurb),
+        title: story
+          ? `${p.name} — ERP for ${p.industry} Companies | ${SITE.shortName}`
+          : `${p.name} — ${p.industry} | ${SITE.shortName}`,
+        description: clip(story ? `${story.headline} ${story.sub}` : p.blurb),
         canonical: abs(path),
+        // link previews (WhatsApp, LinkedIn) show the product, not the logo
+        image: p.video?.poster ? SITE.url + p.video.poster : undefined,
         jsonLd: graph(...nodes),
       };
     }

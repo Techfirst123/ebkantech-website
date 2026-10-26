@@ -3,8 +3,8 @@
  *
  * For every page in allRoutes() it writes real HTML with that page's own
  * <title>, description, canonical URL, Open Graph tags and JSON-LD, so
- * Google can index each page without running JavaScript. It also writes
- * sitemap.xml and robots.txt from the same list, so they never go stale.
+ * Google can index each page without running JavaScript.
+ * sitemap.xml and robots.txt are fixed files in public/.
  *
  * A page that fails to render is reported and still gets its <head>,
  * falling back to client-side rendering for the body.
@@ -90,25 +90,9 @@ for (const url of routes) {
   console.log(`  ${body ? "prerendered" : "HEAD ONLY  "}  ${url}`);
 }
 
-// sitemap.xml + robots.txt, from the same page list
-const today = new Date().toISOString().slice(0, 10);
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes
-  .map((u) => {
-    const pri = u === "/" ? "1.0" : u.startsWith("/products/") ? "0.8" : "0.7";
-    return `  <url>\n    <loc>${routeMeta(u).canonical}</loc>\n    <lastmod>${today}</lastmod>\n    <priority>${pri}</priority>\n  </url>`;
-  })
-  .join("\n")}
-</urlset>
-`;
-fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemap);
-fs.writeFileSync(
-  path.join(dist, "robots.txt"),
-  `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE.url}/sitemap.xml\n`,
-);
-
-console.log(`\n  ${ok}/${routes.length} pages prerendered · sitemap.xml: ${routes.length} URLs · robots.txt`);
+// sitemap.xml and robots.txt are fixed files in public/ (copied to dist/ by
+// Vite). When you add a page, add its <url> to public/sitemap.xml.
+console.log(`\n  ${ok}/${routes.length} pages prerendered`);
 if (failed.length) {
   console.log("  rendered head-only (body falls back to the browser):");
   failed.forEach((f) => console.log("   ", f));

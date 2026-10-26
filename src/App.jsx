@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import BusinessIntelligenceSection from "./components/BusinessIntelligenceSection";
 import HeroCode from "./components/HeroCode";
 import CategoryCards from "./components/CategoryCards";
 import Milestones from "./components/Milestones";
 import ProductScroller from "./components/ProductScroller";
 import FlipCards from "./components/FlipCards";
-import TechStack from "./components/TechStack";
+import { TECH } from "./components/TechStack";
 import SauryaFeature from "./components/SauryaFeature";
 import Process from "./components/Process";
 import SiteFooter from "./components/SiteFooter";
@@ -41,8 +40,6 @@ function LogoMark() {
 }
 
 export default function App() {
-  // Light by default (index.html also sets data-theme="light"); the toggle switches to dark.
-  const [theme, setTheme] = useState("light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [note, setNote] = useState({ text: DEFAULT_NOTE, color: undefined });
   const canvasRef = useRef(null);
@@ -67,20 +64,6 @@ export default function App() {
     }
     document.getElementById(id)?.scrollIntoView();
   }, [hash, navigate]);
-
-  // Apply the chosen theme to <html data-theme="…"> (mirrors the old toggle)
-  useEffect(() => {
-    if (theme) document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    const current =
-      theme ??
-      (window.matchMedia("(prefers-color-scheme:dark)").matches
-        ? "dark"
-        : "light");
-    setTheme(current === "dark" ? "light" : "dark");
-  };
 
   // Hero blueprint canvas — animated drifting node lattice
   useEffect(() => {
@@ -246,16 +229,6 @@ export default function App() {
           </a>
 
           <div className="nav-right">
-            {/* Theme - hamburger ke bahar */}
-            <button
-              className="theme-t"
-              id="themeBtn"
-              type="button"
-              onClick={toggleTheme}
-            >
-              ◐ theme
-            </button>
-
             {/* Desktop + mobile menu */}
             <nav className={`links ${menuOpen ? "menu-open" : ""}`}>
               <Link to="/products/saurya-2x" onClick={() => setMenuOpen(false)}>
@@ -356,8 +329,6 @@ export default function App() {
           <CategoryCards />
         </section>
 
-        <BusinessIntelligenceSection />
-
         {/* PINNED PRODUCT SHOWCASE */}
         <section className="psc-section" id="products">
           <div className="wrap">
@@ -385,25 +356,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* TECHNOLOGY — Bootstrap 5 grid + GSAP (components/TechStack.jsx) */}
-        <section className="tech" id="stack">
-          <div className="wrap">
-            <div className="sec-head">
-              <div>
-                <span className="eyebrow">Technology</span>
-                <h2>
-                  The tools behind <span className="hl">the work</span>.
-                </h2>
-              </div>
-              <p>
-                What we build with, and the ERP and CRM products we run for
-                solar, infrastructure, real estate and sales teams.
-              </p>
-            </div>
-            <TechStack />
-          </div>
-        </section>
-
         {/* INDUSTRIES + ENGAGEMENT MODELS */}
         <section id="industries">
           <div className="wrap two">
@@ -417,17 +369,15 @@ export default function App() {
                   margin: "0 0 22px",
                 }}
               >
-                Domain context shortens every project. These are the sectors our
-                data and ERP work lives in.
+                Domain context shortens every project. These are the sectors
+                our products and data work are built for.
               </p>
               <div className="ind-list">
-                <span>Supply Chain &amp; Logistics</span>
-                <span>Healthcare &amp; Hospitals</span>
-                <span>E-commerce &amp; Retail</span>
-                <span>Warehousing</span>
                 <span>Solar &amp; Renewable Energy</span>
                 <span>Construction &amp; Infrastructure</span>
-                <span>Manufacturing</span>
+                <span>Real Estate &amp; Property Management</span>
+                <span>Accounting &amp; Compliance Firms</span>
+                <span>Warehousing &amp; Logistics</span>
               </div>
             </div>
             <div>
@@ -519,6 +469,20 @@ export default function App() {
                 </div>
               </div>
             )}
+          </div>
+        </section>
+
+        {/* TECHNOLOGY — one compact strip */}
+        <section className="tech-strip" id="stack" aria-label="Technology we build with">
+          <div className="wrap">
+            <span className="eyebrow">Built with</span>
+            <ul className="tech-strip-list">
+              {TECH.filter((g) => g.items)
+                .flatMap((g) => g.items)
+                .map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+            </ul>
           </div>
         </section>
 

@@ -31,7 +31,18 @@ function organization() {
     image: SITE.url + SITE.logo,
     email: SITE.email,
     description: SITE.description,
+    slogan: SITE.tagline,
+    areaServed: "IN",
   };
+  if (SITE.phone) {
+    org.contactPoint = {
+      "@type": "ContactPoint",
+      telephone: SITE.phone,
+      email: SITE.email,
+      contactType: "sales",
+      availableLanguage: ["en"],
+    };
+  }
   if (SITE.phone) org.telephone = SITE.phone;
   if (hasAddress) {
     org.address = {
@@ -88,8 +99,10 @@ export function routeMeta(pathname) {
 
   if (path === "/") {
     return {
-      title: "Ebkan Tech — Saurya2x Solar EPC ERP, Industry ERPs & Data Science",
-      description: clip(SITE.description),
+      title: "Ebkan Tech — Solar EPC ERP Software (Saurya2x), Industry ERPs & Data Science",
+      description: clip(
+        "Ebkan Tech builds industry ERP software — Saurya2x for solar EPC companies, property management and compliance ERPs — plus data science and BI. Book a demo.",
+      ),
       canonical: abs("/"),
       jsonLd: graph(organization(), {
         "@type": "WebSite",
@@ -144,9 +157,13 @@ export function routeMeta(pathname) {
           name: p.name,
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web",
-          description: p.blurb,
+          description: STORY[p.id]?.seoDescription || p.blurb,
           url: abs(path),
           publisher: provider,
+          ...(STORY[p.id]?.differentiators && {
+            featureList: STORY[p.id].differentiators.items.map((d) => d.t),
+          }),
+          ...(p.video?.poster && { screenshot: SITE.url + p.video.poster }),
         },
       ];
       // A walkthrough video makes the page eligible for Google's video
@@ -177,10 +194,10 @@ export function routeMeta(pathname) {
       }
       nodes.push(breadcrumbs([["Home", "/"], [p.name, path]]));
       return {
-        title: story
-          ? `${p.name} — ERP for ${p.industry} Companies | ${SITE.shortName}`
+        title: story?.seoTitle
+          ? `${story.seoTitle} | ${SITE.shortName}`
           : `${p.name} — ${p.industry} | ${SITE.shortName}`,
-        description: clip(story ? `${story.headline} ${story.sub}` : p.blurb),
+        description: clip(story?.seoDescription || p.blurb),
         canonical: abs(path),
         // link previews (WhatsApp, LinkedIn) show the product, not the logo
         image: p.video?.poster ? SITE.url + p.video.poster : undefined,

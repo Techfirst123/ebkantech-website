@@ -12,6 +12,10 @@
 
 export const STORY = {
   "saurya-2x": {
+    // what Google shows: page title and description
+    seoTitle: "Saurya2x — Solar EPC ERP & Project Management Software",
+    seoDescription:
+      "Saurya2x is ERP software for solar EPC companies: NOC-gated execution (DISCOM, CEIG), solar BOQ, procurement, site app and per-Watt margin. Book a live demo.",
     headline: "The operating system for solar EPC — with compliance built in.",
     sub:
       "Tender to handover in one connected system. Sites stay locked until NOCs clear, material is issued only after QA passes, and margin is tracked down to the Watt — so your projects head sees the whole portfolio at 9 a.m. without calling five site engineers.",

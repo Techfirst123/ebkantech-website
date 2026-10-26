@@ -15,9 +15,15 @@ export const SITE = {
 
   // The live address of the site — no trailing slash. Every canonical URL,
   // the sitemap and the structured data are built from this.
-  url: "https://ebkantech.com",
+  // Must be the exact address the site is served at. Vercel serves
+  // www.ebkantech.com (ebkantech.com redirects to it), so canonical URLs,
+  // the sitemap and structured data all use www. Use the same URL as the
+  // "Website" field in your Google Business Profile.
+  url: "https://www.ebkantech.com",
 
   logo: "/ebkan-tech-logo.png",
+  // 1200×630 image shown when a page is shared (WhatsApp, LinkedIn, Google)
+  ogImage: "/og-image.jpg",
   email: "sales@ebkantech.com",
 
   // e.g. "+91 98765 43210" — the public business number
@@ -27,7 +33,10 @@ export const SITE = {
   //        postalCode: "201309", country: "IN" }
   address: { street: "", locality: "", region: "", postalCode: "", country: "IN" },
 
-  // Official profiles, e.g. "https://www.linkedin.com/company/ebkan-tech"
+  // Official profiles — add your Google Business Profile link (Maps → Share →
+  // copy link) and LinkedIn page here. Google uses them to connect the
+  // website to your business listing.
+  // e.g. "https://www.linkedin.com/company/ebkan-tech", "https://maps.app.goo.gl/…"
   // The footer shows a LinkedIn link only once a linkedin.com URL is here.
   sameAs: [],
 

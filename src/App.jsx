@@ -714,7 +714,7 @@ export default function App() {
         </section>
       </main>
 
-      <SiteFooter />
+      <SiteFooter cta={false} />
     </>
   );
 }

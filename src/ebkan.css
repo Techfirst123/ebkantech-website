@@ -1906,3 +1906,381 @@ a.chip-live:hover {
   opacity: 0.6;
   cursor: wait;
 }
+
+/* ===========================================================================
+   DARK HEADER  (home header + inner-page TopBar share header.nav)
+   Stays dark in both light and dark themes, matching the product pages.
+   ======================================================================== */
+header.nav {
+  --hdr-bg: #0a1220;
+  --hdr-line: rgba(255, 255, 255, 0.09);
+  --hdr-text: #ffffff;
+  --hdr-dim: #b6c1d1;
+  background: color-mix(in srgb, var(--hdr-bg) 94%, transparent);
+  border-bottom: 1px solid var(--hdr-line);
+  color: var(--hdr-text);
+  box-shadow: 0 10px 30px -22px rgba(0, 0, 0, 0.7);
+}
+header.nav .brand,
+header.nav .brand-text {
+  color: var(--hdr-text);
+}
+header.nav .brand small {
+  color: #7f8ca0;
+}
+header.nav .theme-t {
+  color: var(--hdr-dim);
+  border-color: var(--hdr-line);
+  border-radius: 6px;
+}
+header.nav .theme-t:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+header.nav .hamburger {
+  border-color: var(--hdr-line);
+}
+header.nav .hamburger span {
+  background: #fff;
+}
+/* mobile dropdown */
+header.nav nav.links {
+  background: var(--hdr-bg);
+  border-bottom-color: var(--hdr-line);
+}
+header.nav nav.links a {
+  color: var(--hdr-dim);
+  border-bottom-color: var(--hdr-line);
+}
+header.nav nav.links a:hover {
+  color: #fff;
+}
+/* primary button in the dark bar: brand blue in both themes */
+header.nav .btn,
+:root[data-theme] header.nav .btn:not(.ghost) {
+  background: #0a6cff;
+  border-color: #0a6cff;
+  color: #fff;
+}
+header.nav .btn:hover {
+  box-shadow: 0 10px 22px -10px rgba(10, 108, 255, 0.8);
+}
+/* inner pages */
+header.nav .cp-nav a:not(.btn) {
+  color: var(--hdr-dim);
+}
+header.nav .cp-nav a:not(.btn):hover {
+  color: #fff;
+}
+
+/* desktop: links sit in the bar, no hamburger */
+@media (min-width: 981px) {
+  header.nav .hamburger {
+    display: none;
+  }
+  header.nav nav.links {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: 28px;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+  header.nav nav.links a {
+    width: auto;
+    padding: 6px 0;
+    border: 0;
+    font-size: 0.92rem;
+  }
+  header.nav nav.links .keep {
+    margin: 0 0 0 4px;
+    padding: 10px 18px;
+  }
+  header.nav .nav-in {
+    height: 70px;
+  }
+}
+
+/* sticky header shouldn't cover the section a link scrolls to */
+section[id],
+footer[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ===========================================================================
+   DARK FOOTER  (components/SiteFooter.jsx)
+   ======================================================================== */
+footer.sf-foot {
+  --f-bg: #070d18;
+  --f-line: rgba(255, 255, 255, 0.08);
+  --f-text: #e8edf5;
+  --f-dim: #9aa7b8;
+  --f-faint: #6b7789;
+  position: relative;
+  overflow: hidden;
+  background: var(--f-bg);
+  color: var(--f-text);
+  border-top: 0;
+  padding: 0;
+  isolation: isolate;
+}
+footer.sf-foot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 50% at 10% 0%, rgba(10, 108, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 95% 0%, rgba(104, 96, 232, 0.14), transparent 70%);
+  pointer-events: none;
+}
+footer.sf-foot a {
+  color: inherit;
+}
+
+/* tier 1: CTA band */
+.sf-foot-cta {
+  margin: 0;
+  padding: 64px 0 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--f-line);
+}
+.sf-foot-eyebrow {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a29dff;
+  margin-bottom: 12px;
+}
+.sf-foot-cta h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #fff;
+  max-width: 22ch;
+}
+.sf-foot-cta p {
+  margin: 12px 0 0;
+  color: var(--f-dim);
+  max-width: 56ch;
+  line-height: 1.6;
+}
+.sf-foot-cta-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-weight: 650;
+  font-size: 0.95rem;
+  background: #0a6cff;
+  color: #fff !important;
+  border: 1px solid #0a6cff;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.sf-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px -12px rgba(10, 108, 255, 0.9);
+}
+.sf-btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.sf-btn-ghost:hover {
+  border-color: #25d366;
+  box-shadow: none;
+}
+
+/* tier 2: brand + link columns */
+.sf-foot-main {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  gap: 40px 32px;
+  padding: 64px 0 56px;
+}
+.sf-foot-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.sf-foot-logo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+.sf-foot-logo span {
+  display: flex;
+  flex-direction: column;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.sf-foot-logo small {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--f-faint);
+  margin-top: 3px;
+  white-space: nowrap;
+}
+.sf-foot-brand p {
+  margin: 18px 0 22px;
+  color: var(--f-dim);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  max-width: 38ch;
+}
+.sf-foot-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.sf-foot-contact li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--f-text);
+}
+.sf-foot-contact svg {
+  color: #6aa5ff;
+  flex: 0 0 auto;
+}
+.sf-foot-contact a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sf-foot-social {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+.sf-foot-social a {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--f-line);
+  color: var(--f-dim);
+}
+.sf-foot-social a:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.sf-foot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sf-foot-col h3 {
+  margin: 4px 0 14px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--f-faint);
+}
+.sf-foot-col a {
+  padding: 5px 0;
+  font-size: 0.92rem;
+  color: var(--f-dim);
+  transition: color 0.15s ease;
+}
+.sf-foot-col a:hover {
+  color: #fff;
+}
+
+/* tier 3: legal bar */
+.sf-foot-legal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding: 24px 0 30px;
+  border-top: 1px solid var(--f-line);
+  font-size: 0.82rem;
+  color: var(--f-faint);
+}
+.sf-foot-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.sf-foot-legal a:hover {
+  color: #fff;
+}
+.sf-foot-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--f-line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--f-dim);
+  font: inherit;
+  cursor: pointer;
+}
+.sf-foot-top:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+footer.sf-foot :focus-visible {
+  outline: 2px solid #6aa5ff;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (max-width: 1100px) {
+  .sf-foot-main {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .sf-foot-brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 700px) {
+  .sf-foot-cta {
+    padding: 48px 0 40px;
+  }
+  .sf-foot-cta-btns,
+  .sf-foot-cta-btns .sf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .sf-foot-main {
+    grid-template-columns: 1fr 1fr;
+    padding: 48px 0 40px;
+    gap: 36px 24px;
+  }
+}

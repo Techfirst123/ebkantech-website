@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PRODUCTS, featuredFirst, hasDemo, hasVideo } from "../data/demoShowcase";
 import { ModulePreview } from "../components/ProductDemos";
@@ -56,11 +56,16 @@ export default function ProductPage() {
   const { id } = useParams();
   const product = PRODUCTS.find((p) => p.id === id);
   const [videoOpen, setVideoOpen] = useState(false);
+  const { hash } = useLocation();
 
-  // <head> (title, description, canonical, structured data) is set by useSeo
+  // <head> (title, description, canonical, structured data) is set by useSeo.
+  // Arriving with a hash (/products/saurya-2x#faq) scrolls to that section.
   useEffect(() => {
-    if (product) window.scrollTo(0, 0);
-  }, [product]);
+    if (!product) return;
+    const el = hash && document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView();
+    else window.scrollTo(0, 0);
+  }, [product, hash]);
 
   // Never leave the player open when moving to another product.
   useEffect(() => setVideoOpen(false), [id]);
@@ -327,7 +332,7 @@ export default function ProductPage() {
 
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter cta={false} />
 
       <VideoModal
         open={videoOpen}

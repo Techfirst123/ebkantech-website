@@ -341,24 +341,22 @@ export default function App() {
         <SauryaFeature />
 
         {/* SCOPE / SERVICES */}
-        <section className="scope" id="scope">
+        <section className="scope scope-compact" id="scope">
           <div className="wrap">
             <div className="sec-head">
               <div>
                 <span className="eyebrow">Scope of business</span>
                 <h2>
-                  Data science, ERP, web, AI and marketing — organized by{" "}
-                  <span className="hl">category</span>.
+                  What we <span className="hl">do</span>.
                 </h2>
               </div>
               <p>
-                Pick a category to see every service in it and the demo
-                products you can open — machine learning and analytics, ERP/CRM
-                platforms, web &amp; app builds, applied AI, and growth marketing.
+                Data science, ERP, CRM, web &amp; app, AI and marketing — pick a
+                category to see its services and demos.
               </p>
             </div>
-            <CategoryCards />
           </div>
+          <CategoryCards />
         </section>
 
         <BusinessIntelligenceSection />

@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BusinessIntelligenceSection from "./components/BusinessIntelligenceSection";
 import HeroCode from "./components/HeroCode";
 import CategoryCards from "./components/CategoryCards";
-import HeroRotator from "./components/HeroRotator";
 import Milestones from "./components/Milestones";
 import ProductScroller from "./components/ProductScroller";
 import FlipCards from "./components/FlipCards";
 import TechStack from "./components/TechStack";
 import SauryaFeature from "./components/SauryaFeature";
+import Process from "./components/Process";
 import SiteFooter from "./components/SiteFooter";
 import { Link } from "react-router-dom";
 import { SITE } from "./data/site";
@@ -304,34 +304,31 @@ export default function App() {
         <section className="hero" style={{ padding: 0 }}>
           <canvas id="grid-canvas" ref={canvasRef} aria-hidden="true" />
           <div className="wrap hero-in">
-            <div className="hero-grid">
-              <div className="hero-copy">
-                <div className="hero-top">
-                  <Link to="/products/saurya-2x" className="chip mono chip-live">
-                    <span className="chip-dot" aria-hidden="true" />
-                    NEW · <b>Saurya2x</b> — the ERP for solar EPC is live →
-                  </Link>
-                </div>
-                <h1>
-                  We turn your business data into <HeroRotator />
-                </h1>
-                <p className="lede">
-                  Ebkan Tech builds ERP products for the industries we know
-                  from the inside — led by <b>Saurya2x</b> for solar EPC — with
-                  the data science, forecasting and BI that make every number
-                  in them something you can act on.
-                </p>
-                <div className="hero-cta">
-                  <Link to="/products/saurya-2x" className="btn">
-                    Explore Saurya2x
-                  </Link>
-                  <a href="#contact" className="btn ghost">
-                    Book a demo →
-                  </a>
-                </div>
+            {/* the whole hero sits in one IDE window: static README + live code */}
+            <HeroCode>
+              <Link to="/products/saurya-2x" className="chip mono chip-live">
+                <span className="chip-dot" aria-hidden="true" />
+                NEW · <b>Saurya2x</b> — the ERP for solar EPC is live →
+              </Link>
+              <h1>
+                We turn your business data into{" "}
+                <span className="amp">decisions</span>.
+              </h1>
+              <p className="lede">
+                Ebkan Tech builds ERP products for the industries we know from
+                the inside — led by <b>Saurya2x</b> for solar EPC — with the data
+                science, forecasting and BI that make every number in them
+                something you can act on.
+              </p>
+              <div className="hero-cta">
+                <Link to="/products/saurya-2x" className="btn">
+                  Explore Saurya2x
+                </Link>
+                <a href="#contact" className="btn ghost">
+                  Book a demo →
+                </a>
               </div>
-              <HeroCode />
-            </div>
+            </HeroCode>
             {/* milestones: Bootstrap 5 grid + GSAP */}
             <Milestones />
           </div>
@@ -369,60 +366,22 @@ export default function App() {
         </section>
 
         {/* PROCESS */}
-        <section id="process">
+        <section id="process" className="wf-section">
           <div className="wrap">
             <div className="sec-head">
               <div>
                 <span className="eyebrow">How we work</span>
-                <h2>From raw data to a system you rely on.</h2>
+                <h2>
+                  A clear path from first call to <span className="hl">go-live</span>.
+                </h2>
               </div>
               <p>
-                Five stages, run in order. Each ends in something you can see,
-                test, or ship.
+                Three stages, six steps. Every step has a timeline and ends with
+                something you can see, test or use — so you always know where
+                your project stands.
               </p>
             </div>
-            <div className="proc-grid">
-              <div className="step">
-                <div className="num">01 · Understand</div>
-                <h4>Define the outcome</h4>
-                <p>
-                  We map your data sources, the decision to improve, and how
-                  success will be measured.
-                </p>
-              </div>
-              <div className="step">
-                <div className="num">02 · Prepare</div>
-                <h4>Clean &amp; model data</h4>
-                <p>
-                  Pipelines, warehousing, and feature engineering to make the
-                  data trustworthy.
-                </p>
-              </div>
-              <div className="step">
-                <div className="num">03 · Build</div>
-                <h4>Model &amp; develop</h4>
-                <p>
-                  ML models or ERP/CRM modules built in increments, reviewed
-                  with you each sprint.
-                </p>
-              </div>
-              <div className="step">
-                <div className="num">04 · Deploy</div>
-                <h4>Ship to production</h4>
-                <p>
-                  Dashboards, APIs, or full systems deployed with testing and
-                  clean handover.
-                </p>
-              </div>
-              <div className="step">
-                <div className="num">05 · Support</div>
-                <h4>Monitor &amp; improve</h4>
-                <p>
-                  We track accuracy and usage, retrain models, and evolve the
-                  roadmap with you.
-                </p>
-              </div>
-            </div>
+            <Process />
           </div>
         </section>
 

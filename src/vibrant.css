@@ -760,3 +760,268 @@ section.tech {
     animation: none;
   }
 }
+
+/* =====================================================================
+   HOW WE WORK — tiered workflow (components/Process.jsx)
+   ===================================================================== */
+section.wf-section {
+  background:
+    radial-gradient(ellipse 60% 50% at 0% 0%, rgba(10, 108, 255, 0.06), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(14, 159, 151, 0.06), transparent 70%),
+    var(--paper);
+}
+
+/* progress rail: Plan → Build → Run */
+.wf-rail {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: relative;
+}
+.wf-rail::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 0;
+  top: 9px;
+  height: 2px;
+  background: linear-gradient(90deg, #0a6cff, #6860e8 50%, #0e9f97);
+  opacity: 0.55;
+  border-radius: 2px;
+}
+.wf-rail li {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.wf-rail-lbl {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0 12px 0 10px;
+  background: var(--paper);
+  position: relative;
+  z-index: 1;
+}
+.wf-rail-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--wf-c);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--wf-c) 14%, transparent);
+  position: relative;
+  z-index: 1;
+}
+.wf-rail-dot::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--wf-c);
+}
+.wf-rail-name {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+.wf-rail-when {
+  font-size: 0.7rem;
+  color: var(--meta);
+}
+
+/* tier cards */
+.wf-tier {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--wf-c);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: 0;
+}
+.wf-tier-h {
+  padding: 22px 24px 18px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--wf-c) 8%, transparent), transparent);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+.wf-tier-step {
+  grid-column: 1 / -1;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wf-c);
+}
+:root[data-theme="dark"] .wf-tier-step {
+  filter: brightness(1.4);
+}
+.wf-tier-h h3 {
+  margin: 2px 0 0;
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.wf-tier-when {
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.wf-tier-h p {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.wf-stages {
+  list-style: none;
+  margin: 0;
+  padding: 8px 24px 22px;
+  display: grid;
+  gap: 0;
+}
+.wf-stages li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  padding: 16px 0;
+}
+.wf-stages li + li {
+  border-top: 1px dashed var(--line);
+}
+/* connector between the two numbered steps */
+.wf-stages li:first-child::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 56px;
+  bottom: -16px;
+  width: 2px;
+  background: color-mix(in srgb, var(--wf-c) 30%, transparent);
+}
+.wf-n {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--wf-c);
+  box-shadow: 0 10px 20px -10px var(--wf-c);
+  position: relative;
+  z-index: 1;
+}
+.wf-stages h4 {
+  margin: 6px 0 6px;
+  font-size: 1.02rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+.wf-stages p {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.wf-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 5px 10px 5px 6px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--wf-c) 9%, transparent);
+  color: var(--text);
+}
+.wf-out-k {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: #fff;
+  background: var(--wf-c);
+}
+
+/* commitments strip */
+.wf-promise {
+  margin-top: 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  overflow: hidden;
+}
+.wf-promise-item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 22px;
+  border-left: 1px solid var(--line);
+  position: relative;
+}
+.wf-promise .col-12:first-child .wf-promise-item {
+  border-left: 0;
+}
+.wf-promise-item b {
+  font-size: 0.94rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wf-promise-item b::before {
+  content: "✓";
+  color: #0e9f97;
+  font-weight: 800;
+}
+.wf-promise-item span {
+  font-size: 0.84rem;
+  color: var(--muted);
+  padding-left: 20px;
+}
+.wf-foot {
+  margin: 18px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.wf-foot a {
+  color: var(--accent);
+  font-weight: 650;
+}
+
+@media (max-width: 991px) {
+  .wf-rail {
+    display: none;
+  }
+  .wf-promise-item {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .wf-promise .col-12:first-child .wf-promise-item {
+    border-top: 0;
+  }
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .wf-promise .col-12:nth-child(2) .wf-promise-item {
+    border-top: 0;
+  }
+  .wf-promise .col-12:nth-child(even) .wf-promise-item {
+    border-left: 1px solid var(--line);
+  }
+}
